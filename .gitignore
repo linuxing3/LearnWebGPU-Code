@@ -1,0 +1,8 @@
+.xmake/
+build*/
+xmake_build/
+
+vendor/glfw/
+vendor/imgui/
+vendor/glm/
+vendor/webgpu/
