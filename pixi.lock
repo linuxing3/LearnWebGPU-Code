@@ -195,46 +195,6 @@ package:
   size: 5625
   timestamp: 1606147468727
 - platform: linux-64
-  name: webgpu-headers
-  version: 0.0.0.2023.11.27.d02fec1
-  category: main
-  manager: conda
-  dependencies:
-  - __unix
-  url: https://conda.anaconda.org/conda-forge/noarch/webgpu-headers-0.0.0.2023.11.27.d02fec1-h707e725_0.conda
-  hash:
-    md5: 85caf66ceb954efba8d597e8064e91ae
-    sha256: cd3c0fbf679b44c46b97cc248f39a28d30af719fc2252af6b56133ccca8c68d6
-  build: h707e725_0
-  arch: x86_64
-  subdir: linux-64
-  build_number: 0
-  license: BSD-3-Clause
-  license_family: BSD
-  noarch: generic
-  size: 17583
-  timestamp: 1701779252413
-- platform: linux-64
-  name: wgpu-native
-  version: 0.18.1.4
-  category: main
-  manager: conda
-  dependencies:
-  - __glibc >=2.17,<3.0.a0
-  - libgcc-ng >=12
-  - libstdcxx-ng >=12
-  url: https://conda.anaconda.org/conda-forge/linux-64/wgpu-native-0.18.1.4-h2b8f863_0.conda
-  hash:
-    md5: 28b1badaa4f5c3854cebc157a01f0968
-    sha256: 8c136a5bebb4e8a615735e746e39ac104bb91ebe0857723732a51260bc79b30d
-  build: h2b8f863_0
-  arch: x86_64
-  subdir: linux-64
-  build_number: 0
-  license: MIT OR Apache-2.0
-  size: 2789533
-  timestamp: 1702316083907
-- platform: linux-64
   name: xorg-fixesproto
   version: '5.0'
   category: main
