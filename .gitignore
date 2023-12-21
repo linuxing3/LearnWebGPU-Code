@@ -4,3 +4,5 @@ xmake_build/
 
 vendor/glfw/
 vendor/glm/
+
+.pixi/
