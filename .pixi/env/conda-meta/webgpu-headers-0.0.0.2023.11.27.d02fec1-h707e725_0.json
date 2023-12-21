@@ -1,0 +1,40 @@
+{
+  "arch": "x86_64",
+  "build": "h707e725_0",
+  "build_number": 0,
+  "depends": [
+    "__unix"
+  ],
+  "license": "BSD-3-Clause",
+  "license_family": "BSD",
+  "md5": "85caf66ceb954efba8d597e8064e91ae",
+  "name": "webgpu-headers",
+  "noarch": "generic",
+  "platform": "linux",
+  "sha256": "cd3c0fbf679b44c46b97cc248f39a28d30af719fc2252af6b56133ccca8c68d6",
+  "size": 17583,
+  "subdir": "linux-64",
+  "timestamp": 1701779252413,
+  "version": "0.0.0.2023.11.27.d02fec1",
+  "fn": "webgpu-headers-0.0.0.2023.11.27.d02fec1-h707e725_0.conda",
+  "url": "https://conda.anaconda.org/conda-forge/noarch/webgpu-headers-0.0.0.2023.11.27.d02fec1-h707e725_0.conda",
+  "channel": "https://conda.anaconda.org/conda-forge",
+  "extracted_package_dir": "/home/vagrant/.cache/rattler/cache/pkgs/webgpu-headers-0.0.0.2023.11.27.d02fec1-h707e725_0",
+  "files": [
+    "include/webgpu.h"
+  ],
+  "paths_data": {
+    "paths_version": 1,
+    "paths": [
+      {
+        "_path": "include/webgpu.h",
+        "path_type": "hardlink",
+        "sha256": "e872e80fdbcb055410a095c0a1abe343f1d33f359152dbc249d416d3d1cd935f",
+        "sha256_in_prefix": "e872e80fdbcb055410a095c0a1abe343f1d33f359152dbc249d416d3d1cd935f",
+        "size_in_bytes": 101631
+      }
+    ]
+  },
+  "link": null,
+  "requested_spec": null
+}

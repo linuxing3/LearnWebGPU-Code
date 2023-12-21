@@ -1,0 +1,39 @@
+{
+  "arch": "x86_64",
+  "build": "h36c2ea0_1001",
+  "build_number": 1001,
+  "depends": [
+    "libgcc-ng >=7.5.0"
+  ],
+  "license": "MIT",
+  "license_family": "MIT",
+  "md5": "22dad4df6e8630e8dff2428f6f6a7036",
+  "name": "pthread-stubs",
+  "platform": "linux",
+  "sha256": "67c84822f87b641d89df09758da498b2d4558d47b920fd1d3fe6d3a871e000ff",
+  "size": 5625,
+  "subdir": "linux-64",
+  "timestamp": 1606147468727,
+  "version": "0.4",
+  "fn": "pthread-stubs-0.4-h36c2ea0_1001.tar.bz2",
+  "url": "https://conda.anaconda.org/conda-forge/linux-64/pthread-stubs-0.4-h36c2ea0_1001.tar.bz2",
+  "channel": "https://conda.anaconda.org/conda-forge",
+  "extracted_package_dir": "/home/vagrant/.cache/rattler/cache/pkgs/pthread-stubs-0.4-h36c2ea0_1001",
+  "files": [
+    "lib/pkgconfig/pthread-stubs.pc"
+  ],
+  "paths_data": {
+    "paths_version": 1,
+    "paths": [
+      {
+        "_path": "lib/pkgconfig/pthread-stubs.pc",
+        "path_type": "hardlink",
+        "sha256": "9d262e06e04a2cfc161db1a41ae1c2ce2d64bcccdae94b80fb683acddee8aa37",
+        "sha256_in_prefix": "7dfdcc57c04b0f05523985898bd51b9225ed204705f701582fdc2a95854e9887",
+        "size_in_bytes": 289
+      }
+    ]
+  },
+  "link": null,
+  "requested_spec": null
+}

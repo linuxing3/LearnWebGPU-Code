@@ -7,8 +7,9 @@ channels = ["conda-forge"]
 platforms = ["linux-64"]
 
 [tasks]
+build = "cmake -B build && cmake --build build"
+start = "./build/App"
 
 [dependencies]
 glfw = "3.3.9.*"
 glm = "0.9.9.8.*"
-wgpu-native = ">=0.18.1.4,<0.18.2"

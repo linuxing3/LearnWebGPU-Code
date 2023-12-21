@@ -1,0 +1,48 @@
+{
+  "arch": "x86_64",
+  "build": "h2b8f863_0",
+  "build_number": 0,
+  "depends": [
+    "__glibc >=2.17,<3.0.a0",
+    "libgcc-ng >=12",
+    "libstdcxx-ng >=12"
+  ],
+  "license": "MIT OR Apache-2.0",
+  "md5": "28b1badaa4f5c3854cebc157a01f0968",
+  "name": "wgpu-native",
+  "platform": "linux",
+  "sha256": "8c136a5bebb4e8a615735e746e39ac104bb91ebe0857723732a51260bc79b30d",
+  "size": 2789533,
+  "subdir": "linux-64",
+  "timestamp": 1702316083907,
+  "version": "0.18.1.4",
+  "fn": "wgpu-native-0.18.1.4-h2b8f863_0.conda",
+  "url": "https://conda.anaconda.org/conda-forge/linux-64/wgpu-native-0.18.1.4-h2b8f863_0.conda",
+  "channel": "https://conda.anaconda.org/conda-forge",
+  "extracted_package_dir": "/home/vagrant/.cache/rattler/cache/pkgs/wgpu-native-0.18.1.4-h2b8f863_0",
+  "files": [
+    "include/wgpu.h",
+    "lib/libwgpu_native.so"
+  ],
+  "paths_data": {
+    "paths_version": 1,
+    "paths": [
+      {
+        "_path": "include/wgpu.h",
+        "path_type": "hardlink",
+        "sha256": "e9051d06a29514c4288e6f29be640f1db1ddee6c570e9403fa8e88712575d27f",
+        "sha256_in_prefix": "e9051d06a29514c4288e6f29be640f1db1ddee6c570e9403fa8e88712575d27f",
+        "size_in_bytes": 9322
+      },
+      {
+        "_path": "lib/libwgpu_native.so",
+        "path_type": "hardlink",
+        "sha256": "8de349be3ee900a8576b95d09570ca24bb65baaa67f40397453afd8c8df1e6fc",
+        "sha256_in_prefix": "8de349be3ee900a8576b95d09570ca24bb65baaa67f40397453afd8c8df1e6fc",
+        "size_in_bytes": 12151552
+      }
+    ]
+  },
+  "link": null,
+  "requested_spec": null
+}

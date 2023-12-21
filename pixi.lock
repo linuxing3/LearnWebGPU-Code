@@ -195,6 +195,26 @@ package:
   size: 5625
   timestamp: 1606147468727
 - platform: linux-64
+  name: webgpu-headers
+  version: 0.0.0.2023.11.27.d02fec1
+  category: main
+  manager: conda
+  dependencies:
+  - __unix
+  url: https://conda.anaconda.org/conda-forge/noarch/webgpu-headers-0.0.0.2023.11.27.d02fec1-h707e725_0.conda
+  hash:
+    md5: 85caf66ceb954efba8d597e8064e91ae
+    sha256: cd3c0fbf679b44c46b97cc248f39a28d30af719fc2252af6b56133ccca8c68d6
+  build: h707e725_0
+  arch: x86_64
+  subdir: linux-64
+  build_number: 0
+  license: BSD-3-Clause
+  license_family: BSD
+  noarch: generic
+  size: 17583
+  timestamp: 1701779252413
+- platform: linux-64
   name: wgpu-native
   version: 0.18.1.4
   category: main

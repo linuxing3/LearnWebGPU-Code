@@ -1,0 +1,13 @@
+prefix=/home/vagrant/workspace/cxx/LearnWebGPU-Code/.pixi/env
+exec_prefix=${prefix}
+includedir=/home/vagrant/workspace/cxx/LearnWebGPU-Code/.pixi/env/include
+libdir=/home/vagrant/workspace/cxx/LearnWebGPU-Code/.pixi/env/lib
+
+Name: GLFW
+Description: A multi-platform library for OpenGL, window and input
+Version: 3.3.9
+URL: https://www.glfw.org/
+Requires.private:  x11
+Libs: -L${libdir} -lglfw
+Libs.private:  -lrt -lm -ldl
+Cflags: -I${includedir}

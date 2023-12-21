@@ -1,0 +1,77 @@
+{
+  "arch": "x86_64",
+  "build": "h7f98852_1",
+  "build_number": 1,
+  "depends": [
+    "xorg-libxrender *",
+    "xorg-libx11 >=1.7.1,<2.0a0",
+    "xorg-randrproto *",
+    "xorg-renderproto *",
+    "xorg-xextproto *",
+    "libgcc-ng >=9.3.0",
+    "xorg-libxext *"
+  ],
+  "license": "MIT",
+  "license_family": "MIT",
+  "md5": "5b0f7da25a4556c9619c3e4b4a98ab07",
+  "name": "xorg-libxrandr",
+  "platform": "linux",
+  "sha256": "ffd075a463896ed86d9519e26dc36f754b695b9c1e1b6115d34fe138b36d8200",
+  "size": 29688,
+  "subdir": "linux-64",
+  "timestamp": 1621515728586,
+  "version": "1.5.2",
+  "fn": "xorg-libxrandr-1.5.2-h7f98852_1.tar.bz2",
+  "url": "https://conda.anaconda.org/conda-forge/linux-64/xorg-libxrandr-1.5.2-h7f98852_1.tar.bz2",
+  "channel": "https://conda.anaconda.org/conda-forge",
+  "extracted_package_dir": "/home/vagrant/.cache/rattler/cache/pkgs/xorg-libxrandr-1.5.2-h7f98852_1",
+  "files": [
+    "include/X11/extensions/Xrandr.h",
+    "lib/libXrandr.so",
+    "lib/libXrandr.so.2",
+    "lib/libXrandr.so.2.2.0",
+    "lib/pkgconfig/xrandr.pc"
+  ],
+  "paths_data": {
+    "paths_version": 1,
+    "paths": [
+      {
+        "_path": "include/X11/extensions/Xrandr.h",
+        "path_type": "hardlink",
+        "sha256": "48dfa916fe0201b8935360abd4e9dd5e421b11a93a6b6a5d0129c0a63a69acd0",
+        "sha256_in_prefix": "48dfa916fe0201b8935360abd4e9dd5e421b11a93a6b6a5d0129c0a63a69acd0",
+        "size_in_bytes": 17120
+      },
+      {
+        "_path": "lib/libXrandr.so",
+        "path_type": "softlink",
+        "sha256": "83ec8d944f0f2a1ca1be5dc2de3c5354f37ce6225f37ee0baf60cc38cb98fbc3",
+        "sha256_in_prefix": "83ec8d944f0f2a1ca1be5dc2de3c5354f37ce6225f37ee0baf60cc38cb98fbc3",
+        "size_in_bytes": 58704
+      },
+      {
+        "_path": "lib/libXrandr.so.2",
+        "path_type": "softlink",
+        "sha256": "83ec8d944f0f2a1ca1be5dc2de3c5354f37ce6225f37ee0baf60cc38cb98fbc3",
+        "sha256_in_prefix": "83ec8d944f0f2a1ca1be5dc2de3c5354f37ce6225f37ee0baf60cc38cb98fbc3",
+        "size_in_bytes": 58704
+      },
+      {
+        "_path": "lib/libXrandr.so.2.2.0",
+        "path_type": "hardlink",
+        "sha256": "83ec8d944f0f2a1ca1be5dc2de3c5354f37ce6225f37ee0baf60cc38cb98fbc3",
+        "sha256_in_prefix": "83ec8d944f0f2a1ca1be5dc2de3c5354f37ce6225f37ee0baf60cc38cb98fbc3",
+        "size_in_bytes": 58704
+      },
+      {
+        "_path": "lib/pkgconfig/xrandr.pc",
+        "path_type": "hardlink",
+        "sha256": "428254fccbe15f97f8369a70a7511e5f16a073c5e9647a034f4b539fca83d747",
+        "sha256_in_prefix": "a6084fb17f4bf4f2fb423e1ece6225489188f58314f4d5867cb1f0146f4ed7c4",
+        "size_in_bytes": 318
+      }
+    ]
+  },
+  "link": null,
+  "requested_spec": null
+}

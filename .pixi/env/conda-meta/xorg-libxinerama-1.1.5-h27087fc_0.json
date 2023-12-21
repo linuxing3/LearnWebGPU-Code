@@ -1,0 +1,81 @@
+{
+  "arch": "x86_64",
+  "build": "h27087fc_0",
+  "build_number": 0,
+  "depends": [
+    "xorg-libxext *",
+    "libstdcxx-ng >=12",
+    "libgcc-ng >=12"
+  ],
+  "license": "MIT",
+  "license_family": "MIT",
+  "md5": "2e1c65825c586444df23784f68bef90e",
+  "name": "xorg-libxinerama",
+  "platform": "linux",
+  "sha256": "0dc50f019ab9871bd9a8be0b00a1e0fa98172ef9c775a13e2dac2924844bb75e",
+  "size": 13350,
+  "subdir": "linux-64",
+  "timestamp": 1667399989190,
+  "version": "1.1.5",
+  "fn": "xorg-libxinerama-1.1.5-h27087fc_0.tar.bz2",
+  "url": "https://conda.anaconda.org/conda-forge/linux-64/xorg-libxinerama-1.1.5-h27087fc_0.tar.bz2",
+  "channel": "https://conda.anaconda.org/conda-forge",
+  "extracted_package_dir": "/home/vagrant/.cache/rattler/cache/pkgs/xorg-libxinerama-1.1.5-h27087fc_0",
+  "files": [
+    "include/X11/extensions/Xinerama.h",
+    "include/X11/extensions/panoramiXext.h",
+    "lib/libXinerama.so",
+    "lib/libXinerama.so.1",
+    "lib/libXinerama.so.1.0.0",
+    "lib/pkgconfig/xinerama.pc"
+  ],
+  "paths_data": {
+    "paths_version": 1,
+    "paths": [
+      {
+        "_path": "include/X11/extensions/Xinerama.h",
+        "path_type": "hardlink",
+        "sha256": "b4fb5a8c42daa9e9817e84be0c3d0dc177c7d862dd086471a707e13bf6d5e957",
+        "sha256_in_prefix": "b4fb5a8c42daa9e9817e84be0c3d0dc177c7d862dd086471a707e13bf6d5e957",
+        "size_in_bytes": 1964
+      },
+      {
+        "_path": "include/X11/extensions/panoramiXext.h",
+        "path_type": "hardlink",
+        "sha256": "6067417fadee5a070126970e81fb0703441c0e721acf08883e6e1d52d9268c5f",
+        "sha256_in_prefix": "6067417fadee5a070126970e81fb0703441c0e721acf08883e6e1d52d9268c5f",
+        "size_in_bytes": 2893
+      },
+      {
+        "_path": "lib/libXinerama.so",
+        "path_type": "softlink",
+        "sha256": "be3c78eba071930ecff57f834553fa222d39bdabb9a8df98229d4d0043fde300",
+        "sha256_in_prefix": "be3c78eba071930ecff57f834553fa222d39bdabb9a8df98229d4d0043fde300",
+        "size_in_bytes": 16552
+      },
+      {
+        "_path": "lib/libXinerama.so.1",
+        "path_type": "softlink",
+        "sha256": "be3c78eba071930ecff57f834553fa222d39bdabb9a8df98229d4d0043fde300",
+        "sha256_in_prefix": "be3c78eba071930ecff57f834553fa222d39bdabb9a8df98229d4d0043fde300",
+        "size_in_bytes": 16552
+      },
+      {
+        "_path": "lib/libXinerama.so.1.0.0",
+        "path_type": "hardlink",
+        "sha256": "be3c78eba071930ecff57f834553fa222d39bdabb9a8df98229d4d0043fde300",
+        "sha256_in_prefix": "be3c78eba071930ecff57f834553fa222d39bdabb9a8df98229d4d0043fde300",
+        "size_in_bytes": 16552
+      },
+      {
+        "_path": "lib/pkgconfig/xinerama.pc",
+        "path_type": "hardlink",
+        "sha256": "37208eb0e3d13e311ffd9f56e69bb13383dc77d8e3d85e401f928c22bf84a0d3",
+        "sha256_in_prefix": "26cb5353cea4359d40311ba7adf7a8acd2d7e78dc6f2e245244395601a1e4703",
+        "size_in_bytes": 308
+      }
+    ]
+  },
+  "link": null,
+  "requested_spec": null
+}
