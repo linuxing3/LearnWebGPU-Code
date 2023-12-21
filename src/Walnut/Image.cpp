@@ -100,7 +100,7 @@ void Image::AllocateMemory(uint64_t size) {
 #ifdef IMGUI_WGPU
   // Build texture atlas
 
-  // Upload texture to graphics system
+  // NOTE: Upload texture to graphics system
   {
     WGPUTextureDescriptor tex_desc = {};
     tex_desc.label = "Dear ImGui General Texture";
@@ -146,7 +146,8 @@ void Image::AllocateMemory(uint64_t size) {
   std::cout << "Walnut image : " << m_Image << std::endl;
   std::cout << "Walnut image view: " << m_ImageView << std::endl;
   std::cout << "Walnut image sampler: " << m_Sampler << std::endl;
-  // Store our identifier
+
+  // NOTE: Store our identifier, just a pointer in depth
   static_assert(sizeof(ImTextureID) >= sizeof(m_Image));
   m_DescriptorSet = (VkDescriptorSet)(ImTextureID)m_ImageView;
 #endif // IMGUI_WGPU
@@ -163,7 +164,7 @@ void Image::Release() {
 
 void Image::SetData(const void *data) {
   wgpu::Device device = Application::Get()->GetDevice();
-  size_t size_pp = Utils::BytesPerPixel(m_Format);
+  size_t size_pp = Utils::BytesPerPixel(m_Format); // RGBA8Unorm = 4 bytes
   size_t upload_size = m_Width * m_Height * size_pp;
 
 #ifdef IMGUI_WGPU
@@ -179,6 +180,7 @@ void Image::SetData(const void *data) {
     layout.bytesPerRow = m_Width * size_pp;
     layout.rowsPerImage = m_Height;
     WGPUExtent3D size = {(uint32_t)m_Width, (uint32_t)m_Height, 1};
+    // NOTE: write data to texture with specific size
     wgpuQueueWriteTexture(device.getQueue(), &dst_view, data, upload_size,
                           &layout, &size);
   }

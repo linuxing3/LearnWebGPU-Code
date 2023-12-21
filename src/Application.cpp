@@ -56,6 +56,7 @@
 #include "ImGui/Roboto-Italic.embed"
 #include "ImGui/Roboto-Regular.embed"
 
+// NOTE: Singleton design pattern
 static Application *s_Instance;
 
 constexpr float PI = 3.14159265358979323846f;
@@ -690,8 +691,12 @@ void Application::updateLighting() {
   }
 }
 
+// NOTE: Set Application instance as static instance, not global variable
+// this = *Application
 Application::Application() { s_Instance = this; };
 
+// NOTE: Singleton design pattern
+// so other code can access it with static method Application::Get()
 Application *Application::Get() { return s_Instance; };
 
 wgpu::CommandBuffer

@@ -107,12 +107,14 @@ public:
 
     ImGui::End();
 
+    // Viewport to show Walnut Image in Imgui window
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
     ImGui::Begin("Viewport");
 
     m_ViewportWidth = ImGui::GetContentRegionAvail().x;
     m_ViewportHeight = ImGui::GetContentRegionAvail().y;
 
+    // Call renderer
     auto image = m_Renderer.GetFinalImage();
     if (image) {
       ImGui::Image(image->GetDescriptorSet(),
@@ -130,6 +132,8 @@ public:
     Timer timer;
 
     m_Camera.OnResize(m_ViewportWidth, m_ViewportHeight);
+
+    // render procedure
     m_Renderer.OnResize(m_ViewportWidth, m_ViewportHeight);
     m_Renderer.Render(m_Scene, m_Camera);
 

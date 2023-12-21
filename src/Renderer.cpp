@@ -37,10 +37,14 @@ void Renderer::OnResize(uint32_t width, uint32_t height) {
     m_FinalImage->Resize(width, height);
   } else {
     /* std::cout << "Creating Walnut::Image"; */
+    // BUG: Easy Mistake here, must reinitialize Walnut::Image object before
+    // render
     m_FinalImage = std::make_shared<Walnut::Image>(width, height,
                                                    Walnut::ImageFormat::RGBA);
   }
 
+  // BUG: Easy Mistake here, must reinitialize image data as RGBA uint32_t array
+  // before render
   delete[] m_ImageData;
   m_ImageData = new uint32_t[width * height];
 #define MT
