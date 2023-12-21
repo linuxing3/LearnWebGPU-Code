@@ -2,8 +2,6 @@
 build*/
 xmake_build/
 
-vendor/glfw/
-vendor/glm/
 vendor/webgpu/bin
 
 .pixi/
