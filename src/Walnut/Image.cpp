@@ -101,7 +101,9 @@ void Image::AllocateMemory(uint64_t size) {
   // Build texture atlas
 
   // NOTE: Upload texture to graphics system
+
   {
+    // Create Texture/Image
     WGPUTextureDescriptor tex_desc = {};
     tex_desc.label = "Dear ImGui General Texture";
     tex_desc.dimension = WGPUTextureDimension_2D;
@@ -114,6 +116,7 @@ void Image::AllocateMemory(uint64_t size) {
     tex_desc.usage = WGPUTextureUsage_CopyDst | WGPUTextureUsage_TextureBinding;
     m_Image = wgpuDeviceCreateTexture(device, &tex_desc);
 
+    // Create ImageView <-- DescriptorSet
     WGPUTextureViewDescriptor tex_view_desc = {};
     tex_view_desc.format = WGPUTextureFormat_RGBA8Unorm;
     tex_view_desc.dimension = WGPUTextureViewDimension_2D;
@@ -125,8 +128,8 @@ void Image::AllocateMemory(uint64_t size) {
     m_ImageView = wgpuTextureCreateView(m_Image, &tex_view_desc);
   }
 
-  // Create the associated sampler
   {
+    // Create the associated sampler for Texture/Image
     WGPUSamplerDescriptor sampler_desc = {};
     sampler_desc.minFilter = WGPUFilterMode_Linear;
     sampler_desc.magFilter = WGPUFilterMode_Linear;
@@ -147,8 +150,8 @@ void Image::AllocateMemory(uint64_t size) {
   std::cout << "Walnut image view: " << m_ImageView << std::endl;
   std::cout << "Walnut image sampler: " << m_Sampler << std::endl;
 
-  // NOTE: Store our identifier, just a pointer in depth
   static_assert(sizeof(ImTextureID) >= sizeof(m_Image));
+  // NOTE: Store our identifier, just a pointer in depth to memory
   m_DescriptorSet = (VkDescriptorSet)(ImTextureID)m_ImageView;
 #endif // IMGUI_WGPU
 
@@ -177,10 +180,10 @@ void Image::SetData(const void *data) {
     dst_view.aspect = WGPUTextureAspect_All;
     WGPUTextureDataLayout layout = {};
     layout.offset = 0;
-    layout.bytesPerRow = m_Width * size_pp;
-    layout.rowsPerImage = m_Height;
+    layout.bytesPerRow = m_Width * size_pp; // 列数 * 像素尺寸
+    layout.rowsPerImage = m_Height; // 行数
     WGPUExtent3D size = {(uint32_t)m_Width, (uint32_t)m_Height, 1};
-    // NOTE: write data to texture with specific size
+    // NOTE: write data to texture with specific size and layout
     wgpuQueueWriteTexture(device.getQueue(), &dst_view, data, upload_size,
                           &layout, &size);
   }

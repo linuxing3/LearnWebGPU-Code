@@ -692,7 +692,7 @@ void Application::updateLighting() {
 }
 
 // NOTE: Set Application instance as static instance, not global variable
-// this = *Application
+// here this = *Application
 Application::Application() { s_Instance = this; };
 
 // NOTE: Singleton design pattern
