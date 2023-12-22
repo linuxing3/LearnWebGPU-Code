@@ -1,0 +1,46 @@
+[
+{
+  "directory": "/home/vagrant/workspace/cxx/LearnWebGPU-Code",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Ivendor/webgpu/include/webgpu", "-Ivendor/imgui", "-Ivendor/glfw3webgpu", "-Ivendor", "-Isrc", "-DRESOURCE_DIR=\"../resources\"", "-DWGPU_TARGET=WGPU_TARGET_LINUX_X11", "-DGLFW_EXPOSE_NATIVE_X11", "-o", "build/.objs/wgpu-imgui-app/linux/x86_64/debug/src/Application.cpp.o", "src/Application.cpp"],
+  "file": "src/Application.cpp"
+},
+{
+  "directory": "/home/vagrant/workspace/cxx/LearnWebGPU-Code",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Ivendor/webgpu/include/webgpu", "-Ivendor/imgui", "-Ivendor/glfw3webgpu", "-Ivendor", "-Isrc", "-DRESOURCE_DIR=\"../resources\"", "-DWGPU_TARGET=WGPU_TARGET_LINUX_X11", "-DGLFW_EXPOSE_NATIVE_X11", "-o", "build/.objs/wgpu-imgui-app/linux/x86_64/debug/src/ResourceManager.cpp.o", "src/ResourceManager.cpp"],
+  "file": "src/ResourceManager.cpp"
+},
+{
+  "directory": "/home/vagrant/workspace/cxx/LearnWebGPU-Code",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Ivendor/webgpu/include/webgpu", "-Ivendor/imgui", "-Ivendor/glfw3webgpu", "-Ivendor", "-Isrc", "-DRESOURCE_DIR=\"../resources\"", "-DWGPU_TARGET=WGPU_TARGET_LINUX_X11", "-DGLFW_EXPOSE_NATIVE_X11", "-o", "build/.objs/wgpu-imgui-app/linux/x86_64/debug/src/Renderer.cpp.o", "src/Renderer.cpp"],
+  "file": "src/Renderer.cpp"
+},
+{
+  "directory": "/home/vagrant/workspace/cxx/LearnWebGPU-Code",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Ivendor/webgpu/include/webgpu", "-Ivendor/imgui", "-Ivendor/glfw3webgpu", "-Ivendor", "-Isrc", "-DRESOURCE_DIR=\"../resources\"", "-DWGPU_TARGET=WGPU_TARGET_LINUX_X11", "-DGLFW_EXPOSE_NATIVE_X11", "-o", "build/.objs/wgpu-imgui-app/linux/x86_64/debug/src/Camera.cpp.o", "src/Camera.cpp"],
+  "file": "src/Camera.cpp"
+},
+{
+  "directory": "/home/vagrant/workspace/cxx/LearnWebGPU-Code",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Ivendor/webgpu/include/webgpu", "-Ivendor/imgui", "-Ivendor/glfw3webgpu", "-Ivendor", "-Isrc", "-DRESOURCE_DIR=\"../resources\"", "-DWGPU_TARGET=WGPU_TARGET_LINUX_X11", "-DGLFW_EXPOSE_NATIVE_X11", "-o", "build/.objs/wgpu-imgui-app/linux/x86_64/debug/src/main.cpp.o", "src/main.cpp"],
+  "file": "src/main.cpp"
+},
+{
+  "directory": "/home/vagrant/workspace/cxx/LearnWebGPU-Code",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Ivendor/webgpu/include/webgpu", "-Ivendor/imgui", "-Ivendor/glfw3webgpu", "-Ivendor", "-Isrc", "-DRESOURCE_DIR=\"../resources\"", "-DWGPU_TARGET=WGPU_TARGET_LINUX_X11", "-DGLFW_EXPOSE_NATIVE_X11", "-o", "build/.objs/wgpu-imgui-app/linux/x86_64/debug/src/implementations.cpp.o", "src/implementations.cpp"],
+  "file": "src/implementations.cpp"
+},
+{
+  "directory": "/home/vagrant/workspace/cxx/LearnWebGPU-Code",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Ivendor/webgpu/include/webgpu", "-Ivendor/imgui", "-Ivendor/glfw3webgpu", "-Ivendor", "-Isrc", "-DRESOURCE_DIR=\"../resources\"", "-DWGPU_TARGET=WGPU_TARGET_LINUX_X11", "-DGLFW_EXPOSE_NATIVE_X11", "-o", "build/.objs/wgpu-imgui-app/linux/x86_64/debug/src/Walnut/Random.cpp.o", "src/Walnut/Random.cpp"],
+  "file": "src/Walnut/Random.cpp"
+},
+{
+  "directory": "/home/vagrant/workspace/cxx/LearnWebGPU-Code",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Ivendor/webgpu/include/webgpu", "-Ivendor/imgui", "-Ivendor/glfw3webgpu", "-Ivendor", "-Isrc", "-DRESOURCE_DIR=\"../resources\"", "-DWGPU_TARGET=WGPU_TARGET_LINUX_X11", "-DGLFW_EXPOSE_NATIVE_X11", "-o", "build/.objs/wgpu-imgui-app/linux/x86_64/debug/src/Walnut/Image.cpp.o", "src/Walnut/Image.cpp"],
+  "file": "src/Walnut/Image.cpp"
+},
+{
+  "directory": "/home/vagrant/workspace/cxx/LearnWebGPU-Code",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Ivendor/webgpu/include/webgpu", "-Ivendor/imgui", "-Ivendor/glfw3webgpu", "-Ivendor", "-Isrc", "-DRESOURCE_DIR=\"../resources\"", "-DWGPU_TARGET=WGPU_TARGET_LINUX_X11", "-DGLFW_EXPOSE_NATIVE_X11", "-o", "build/.objs/wgpu-imgui-app/linux/x86_64/debug/src/Walnut/Input/Input.cpp.o", "src/Walnut/Input/Input.cpp"],
+  "file": "src/Walnut/Input/Input.cpp"
+}]
