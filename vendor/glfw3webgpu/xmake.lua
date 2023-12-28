@@ -1,0 +1,12 @@
+includes('../glfw')
+
+target('glfw3webgpu')
+set_kind('static')
+add_files('*.c')
+set_targetdir('.')
+add_includedirs('.')
+add_includedirs('../webgpu/include/webgpu')
+add_includedirs('../glfw/include')
+add_deps('glfw')
+add_linkdirs('../webgpu/bin/linux-x86_64')
+add_links('wgpu')

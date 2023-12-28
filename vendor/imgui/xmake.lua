@@ -1,0 +1,5 @@
+target('imgui')
+set_kind('static')
+add_files('*.cpp')
+add_includedirs('.')
+set_targetdir('.')

@@ -1,7 +1,9 @@
 .xmake/
 build*/
+*build$/
 xmake_build/
 
-vendor/webgpu/bin
+*/**/bin
 
 .pixi/
+*.a
