@@ -615,13 +615,17 @@ bool Application::onInit() {
   m_bufferSize = 64 * sizeof(float);
   buildWindow();
   buildDeviceObject();
-  /* buildRenderPipeline(); */
-  /* buildComputePipeline(); */
+/* #define WEBGPU_COMPUTE */
+#ifdef WEBGPU_COMPUTE
   initComputeBindGroupLayout();
   initComputePipeline();
   initComputeBuffers();
   initComputeBindGroup();
-  /* initGui(); */
+  /* buildComputePipeline(); */
+#else
+  buildRenderPipeline();
+  initGui();
+#endif // DEBUG
   return true;
 }
 
@@ -970,6 +974,7 @@ void Application::terminateBuffers() {
   /* wgpuBufferRelease(m_mapBuffer); */
 }
 
+// NOTE: Personal implmentation works, but so hard
 void Application::buildComputePipeline() {
   BufferDescriptor storgeBufferDesc{};
   storgeBufferDesc.size = 1000;

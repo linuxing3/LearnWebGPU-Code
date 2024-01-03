@@ -1,6 +1,96 @@
 [
 {
   "directory": "/home/vagrant/workspace/cxx/LearnWebGPU-Code",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Ivendor/imgui", "-o", "build/.objs/imgui/linux/x86_64/debug/vendor/imgui/imgui_tables.cpp.o", "vendor/imgui/imgui_tables.cpp"],
+  "file": "vendor/imgui/imgui_tables.cpp"
+},
+{
+  "directory": "/home/vagrant/workspace/cxx/LearnWebGPU-Code",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Ivendor/imgui", "-o", "build/.objs/imgui/linux/x86_64/debug/vendor/imgui/imgui_demo.cpp.o", "vendor/imgui/imgui_demo.cpp"],
+  "file": "vendor/imgui/imgui_demo.cpp"
+},
+{
+  "directory": "/home/vagrant/workspace/cxx/LearnWebGPU-Code",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Ivendor/imgui", "-o", "build/.objs/imgui/linux/x86_64/debug/vendor/imgui/imgui.cpp.o", "vendor/imgui/imgui.cpp"],
+  "file": "vendor/imgui/imgui.cpp"
+},
+{
+  "directory": "/home/vagrant/workspace/cxx/LearnWebGPU-Code",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Ivendor/imgui", "-o", "build/.objs/imgui/linux/x86_64/debug/vendor/imgui/imgui_widgets.cpp.o", "vendor/imgui/imgui_widgets.cpp"],
+  "file": "vendor/imgui/imgui_widgets.cpp"
+},
+{
+  "directory": "/home/vagrant/workspace/cxx/LearnWebGPU-Code",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Ivendor/imgui", "-o", "build/.objs/imgui/linux/x86_64/debug/vendor/imgui/imgui_draw.cpp.o", "vendor/imgui/imgui_draw.cpp"],
+  "file": "vendor/imgui/imgui_draw.cpp"
+},
+{
+  "directory": "/home/vagrant/workspace/cxx/LearnWebGPU-Code",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Ivendor", "-Isrc", "-Ivendor/glfw", "-Ivendor/imgui", "-Ivendor/glfw3webgpu", "-Ivendor/webgpu/include/webgpu", "-Ivendor/webgpu/include", "-DRESOURCE_DIR=\"../resources\"", "-DWGPU_TARGET=WGPU_TARGET_LINUX_X11", "-DGLFW_EXPOSE_NATIVE_X11", "-DWEBGPU_BACKEND_WGPU", "-o", "build/.objs/wgpu-imgui-app/linux/x86_64/debug/src/Walnut/Random.cpp.o", "src/Walnut/Random.cpp"],
+  "file": "src/Walnut/Random.cpp"
+},
+{
+  "directory": "/home/vagrant/workspace/cxx/LearnWebGPU-Code",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Ivendor", "-Isrc", "-Ivendor/glfw", "-Ivendor/imgui", "-Ivendor/glfw3webgpu", "-Ivendor/webgpu/include/webgpu", "-Ivendor/webgpu/include", "-DRESOURCE_DIR=\"../resources\"", "-DWGPU_TARGET=WGPU_TARGET_LINUX_X11", "-DGLFW_EXPOSE_NATIVE_X11", "-DWEBGPU_BACKEND_WGPU", "-o", "build/.objs/wgpu-imgui-app/linux/x86_64/debug/src/Walnut/Image.cpp.o", "src/Walnut/Image.cpp"],
+  "file": "src/Walnut/Image.cpp"
+},
+{
+  "directory": "/home/vagrant/workspace/cxx/LearnWebGPU-Code",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Ivendor", "-Isrc", "-Ivendor/glfw", "-Ivendor/imgui", "-Ivendor/glfw3webgpu", "-Ivendor/webgpu/include/webgpu", "-Ivendor/webgpu/include", "-DRESOURCE_DIR=\"../resources\"", "-DWGPU_TARGET=WGPU_TARGET_LINUX_X11", "-DGLFW_EXPOSE_NATIVE_X11", "-DWEBGPU_BACKEND_WGPU", "-o", "build/.objs/wgpu-imgui-app/linux/x86_64/debug/src/Walnut/Input/Input.cpp.o", "src/Walnut/Input/Input.cpp"],
+  "file": "src/Walnut/Input/Input.cpp"
+},
+{
+  "directory": "/home/vagrant/workspace/cxx/LearnWebGPU-Code",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Ivendor", "-Isrc", "-Ivendor/glfw", "-Ivendor/imgui", "-Ivendor/glfw3webgpu", "-Ivendor/webgpu/include/webgpu", "-Ivendor/webgpu/include", "-DRESOURCE_DIR=\"../resources\"", "-DWGPU_TARGET=WGPU_TARGET_LINUX_X11", "-DGLFW_EXPOSE_NATIVE_X11", "-DWEBGPU_BACKEND_WGPU", "-o", "build/.objs/wgpu-imgui-app/linux/x86_64/debug/src/ImGui/ImGuiBuild.cpp.o", "src/ImGui/ImGuiBuild.cpp"],
+  "file": "src/ImGui/ImGuiBuild.cpp"
+},
+{
+  "directory": "/home/vagrant/workspace/cxx/LearnWebGPU-Code",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Ivendor", "-Isrc", "-Ivendor/glfw", "-Ivendor/imgui", "-Ivendor/glfw3webgpu", "-Ivendor/webgpu/include/webgpu", "-Ivendor/webgpu/include", "-DRESOURCE_DIR=\"../resources\"", "-DWGPU_TARGET=WGPU_TARGET_LINUX_X11", "-DGLFW_EXPOSE_NATIVE_X11", "-DWEBGPU_BACKEND_WGPU", "-o", "build/.objs/wgpu-imgui-app/linux/x86_64/debug/src/ImGui/ImGuiTheme.cpp.o", "src/ImGui/ImGuiTheme.cpp"],
+  "file": "src/ImGui/ImGuiTheme.cpp"
+},
+{
+  "directory": "/home/vagrant/workspace/cxx/LearnWebGPU-Code",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Ivendor", "-Isrc", "-Ivendor/glfw", "-Ivendor/imgui", "-Ivendor/glfw3webgpu", "-Ivendor/webgpu/include/webgpu", "-Ivendor/webgpu/include", "-DRESOURCE_DIR=\"../resources\"", "-DWGPU_TARGET=WGPU_TARGET_LINUX_X11", "-DGLFW_EXPOSE_NATIVE_X11", "-DWEBGPU_BACKEND_WGPU", "-o", "build/.objs/wgpu-imgui-app/linux/x86_64/debug/src/Application.cpp.o", "src/Application.cpp"],
+  "file": "src/Application.cpp"
+},
+{
+  "directory": "/home/vagrant/workspace/cxx/LearnWebGPU-Code",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Ivendor", "-Isrc", "-Ivendor/glfw", "-Ivendor/imgui", "-Ivendor/glfw3webgpu", "-Ivendor/webgpu/include/webgpu", "-Ivendor/webgpu/include", "-DRESOURCE_DIR=\"../resources\"", "-DWGPU_TARGET=WGPU_TARGET_LINUX_X11", "-DGLFW_EXPOSE_NATIVE_X11", "-DWEBGPU_BACKEND_WGPU", "-o", "build/.objs/wgpu-imgui-app/linux/x86_64/debug/src/ResourceManager.cpp.o", "src/ResourceManager.cpp"],
+  "file": "src/ResourceManager.cpp"
+},
+{
+  "directory": "/home/vagrant/workspace/cxx/LearnWebGPU-Code",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Ivendor", "-Isrc", "-Ivendor/glfw", "-Ivendor/imgui", "-Ivendor/glfw3webgpu", "-Ivendor/webgpu/include/webgpu", "-Ivendor/webgpu/include", "-DRESOURCE_DIR=\"../resources\"", "-DWGPU_TARGET=WGPU_TARGET_LINUX_X11", "-DGLFW_EXPOSE_NATIVE_X11", "-DWEBGPU_BACKEND_WGPU", "-o", "build/.objs/wgpu-imgui-app/linux/x86_64/debug/src/Renderer.cpp.o", "src/Renderer.cpp"],
+  "file": "src/Renderer.cpp"
+},
+{
+  "directory": "/home/vagrant/workspace/cxx/LearnWebGPU-Code",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Ivendor", "-Isrc", "-Ivendor/glfw", "-Ivendor/imgui", "-Ivendor/glfw3webgpu", "-Ivendor/webgpu/include/webgpu", "-Ivendor/webgpu/include", "-DRESOURCE_DIR=\"../resources\"", "-DWGPU_TARGET=WGPU_TARGET_LINUX_X11", "-DGLFW_EXPOSE_NATIVE_X11", "-DWEBGPU_BACKEND_WGPU", "-o", "build/.objs/wgpu-imgui-app/linux/x86_64/debug/src/ViewportRenderer.cpp.o", "src/ViewportRenderer.cpp"],
+  "file": "src/ViewportRenderer.cpp"
+},
+{
+  "directory": "/home/vagrant/workspace/cxx/LearnWebGPU-Code",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Ivendor", "-Isrc", "-Ivendor/glfw", "-Ivendor/imgui", "-Ivendor/glfw3webgpu", "-Ivendor/webgpu/include/webgpu", "-Ivendor/webgpu/include", "-DRESOURCE_DIR=\"../resources\"", "-DWGPU_TARGET=WGPU_TARGET_LINUX_X11", "-DGLFW_EXPOSE_NATIVE_X11", "-DWEBGPU_BACKEND_WGPU", "-o", "build/.objs/wgpu-imgui-app/linux/x86_64/debug/src/Camera.cpp.o", "src/Camera.cpp"],
+  "file": "src/Camera.cpp"
+},
+{
+  "directory": "/home/vagrant/workspace/cxx/LearnWebGPU-Code",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Ivendor", "-Isrc", "-Ivendor/glfw", "-Ivendor/imgui", "-Ivendor/glfw3webgpu", "-Ivendor/webgpu/include/webgpu", "-Ivendor/webgpu/include", "-DRESOURCE_DIR=\"../resources\"", "-DWGPU_TARGET=WGPU_TARGET_LINUX_X11", "-DGLFW_EXPOSE_NATIVE_X11", "-DWEBGPU_BACKEND_WGPU", "-o", "build/.objs/wgpu-imgui-app/linux/x86_64/debug/src/main.cpp.o", "src/main.cpp"],
+  "file": "src/main.cpp"
+},
+{
+  "directory": "/home/vagrant/workspace/cxx/LearnWebGPU-Code",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Ivendor", "-Isrc", "-Ivendor/glfw", "-Ivendor/imgui", "-Ivendor/glfw3webgpu", "-Ivendor/webgpu/include/webgpu", "-Ivendor/webgpu/include", "-DRESOURCE_DIR=\"../resources\"", "-DWGPU_TARGET=WGPU_TARGET_LINUX_X11", "-DGLFW_EXPOSE_NATIVE_X11", "-DWEBGPU_BACKEND_WGPU", "-o", "build/.objs/wgpu-imgui-app/linux/x86_64/debug/src/implementations.cpp.o", "src/implementations.cpp"],
+  "file": "src/implementations.cpp"
+},
+{
+  "directory": "/home/vagrant/workspace/cxx/LearnWebGPU-Code",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Ivendor/glfw3webgpu", "-Ivendor/webgpu/include/webgpu", "-Ivendor/glfw/include", "-o", "build/.objs/glfw3webgpu/linux/x86_64/debug/vendor/glfw3webgpu/glfw3webgpu.c.o", "vendor/glfw3webgpu/glfw3webgpu.c"],
+  "file": "vendor/glfw3webgpu/glfw3webgpu.c"
+},
+{
+  "directory": "/home/vagrant/workspace/cxx/LearnWebGPU-Code",
   "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Ivendor/glfw/include", "-Ivendor/glfw/src", "-D_GLFW_X11", "-o", "build/.objs/glfw/linux/x86_64/debug/vendor/glfw/src/context.c.o", "vendor/glfw/src/context.c"],
   "file": "vendor/glfw/src/context.c"
 },
@@ -78,94 +168,4 @@
   "directory": "/home/vagrant/workspace/cxx/LearnWebGPU-Code",
   "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Ivendor/glfw/include", "-Ivendor/glfw/src", "-D_GLFW_X11", "-o", "build/.objs/glfw/linux/x86_64/debug/vendor/glfw/src/osmesa_context.c.o", "vendor/glfw/src/osmesa_context.c"],
   "file": "vendor/glfw/src/osmesa_context.c"
-},
-{
-  "directory": "/home/vagrant/workspace/cxx/LearnWebGPU-Code",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Ivendor/imgui", "-o", "build/.objs/imgui/linux/x86_64/debug/vendor/imgui/imgui_tables.cpp.o", "vendor/imgui/imgui_tables.cpp"],
-  "file": "vendor/imgui/imgui_tables.cpp"
-},
-{
-  "directory": "/home/vagrant/workspace/cxx/LearnWebGPU-Code",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Ivendor/imgui", "-o", "build/.objs/imgui/linux/x86_64/debug/vendor/imgui/imgui_demo.cpp.o", "vendor/imgui/imgui_demo.cpp"],
-  "file": "vendor/imgui/imgui_demo.cpp"
-},
-{
-  "directory": "/home/vagrant/workspace/cxx/LearnWebGPU-Code",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Ivendor/imgui", "-o", "build/.objs/imgui/linux/x86_64/debug/vendor/imgui/imgui.cpp.o", "vendor/imgui/imgui.cpp"],
-  "file": "vendor/imgui/imgui.cpp"
-},
-{
-  "directory": "/home/vagrant/workspace/cxx/LearnWebGPU-Code",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Ivendor/imgui", "-o", "build/.objs/imgui/linux/x86_64/debug/vendor/imgui/imgui_widgets.cpp.o", "vendor/imgui/imgui_widgets.cpp"],
-  "file": "vendor/imgui/imgui_widgets.cpp"
-},
-{
-  "directory": "/home/vagrant/workspace/cxx/LearnWebGPU-Code",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Ivendor/imgui", "-o", "build/.objs/imgui/linux/x86_64/debug/vendor/imgui/imgui_draw.cpp.o", "vendor/imgui/imgui_draw.cpp"],
-  "file": "vendor/imgui/imgui_draw.cpp"
-},
-{
-  "directory": "/home/vagrant/workspace/cxx/LearnWebGPU-Code",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Ivendor/glfw3webgpu", "-Ivendor/webgpu/include/webgpu", "-Ivendor/glfw/include", "-o", "build/.objs/glfw3webgpu/linux/x86_64/debug/vendor/glfw3webgpu/glfw3webgpu.c.o", "vendor/glfw3webgpu/glfw3webgpu.c"],
-  "file": "vendor/glfw3webgpu/glfw3webgpu.c"
-},
-{
-  "directory": "/home/vagrant/workspace/cxx/LearnWebGPU-Code",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Ivendor", "-Isrc", "-Ivendor/glfw", "-Ivendor/imgui", "-Ivendor/glfw3webgpu", "-Ivendor/webgpu/include/webgpu", "-Ivendor/webgpu/include", "-DRESOURCE_DIR=\"../resources\"", "-DWGPU_TARGET=WGPU_TARGET_LINUX_X11", "-DGLFW_EXPOSE_NATIVE_X11", "-DWEBGPU_BACKEND_WGPU", "-o", "build/.objs/wgpu-imgui-app/linux/x86_64/debug/src/Walnut/Random.cpp.o", "src/Walnut/Random.cpp"],
-  "file": "src/Walnut/Random.cpp"
-},
-{
-  "directory": "/home/vagrant/workspace/cxx/LearnWebGPU-Code",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Ivendor", "-Isrc", "-Ivendor/glfw", "-Ivendor/imgui", "-Ivendor/glfw3webgpu", "-Ivendor/webgpu/include/webgpu", "-Ivendor/webgpu/include", "-DRESOURCE_DIR=\"../resources\"", "-DWGPU_TARGET=WGPU_TARGET_LINUX_X11", "-DGLFW_EXPOSE_NATIVE_X11", "-DWEBGPU_BACKEND_WGPU", "-o", "build/.objs/wgpu-imgui-app/linux/x86_64/debug/src/Walnut/Image.cpp.o", "src/Walnut/Image.cpp"],
-  "file": "src/Walnut/Image.cpp"
-},
-{
-  "directory": "/home/vagrant/workspace/cxx/LearnWebGPU-Code",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Ivendor", "-Isrc", "-Ivendor/glfw", "-Ivendor/imgui", "-Ivendor/glfw3webgpu", "-Ivendor/webgpu/include/webgpu", "-Ivendor/webgpu/include", "-DRESOURCE_DIR=\"../resources\"", "-DWGPU_TARGET=WGPU_TARGET_LINUX_X11", "-DGLFW_EXPOSE_NATIVE_X11", "-DWEBGPU_BACKEND_WGPU", "-o", "build/.objs/wgpu-imgui-app/linux/x86_64/debug/src/Walnut/Input/Input.cpp.o", "src/Walnut/Input/Input.cpp"],
-  "file": "src/Walnut/Input/Input.cpp"
-},
-{
-  "directory": "/home/vagrant/workspace/cxx/LearnWebGPU-Code",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Ivendor", "-Isrc", "-Ivendor/glfw", "-Ivendor/imgui", "-Ivendor/glfw3webgpu", "-Ivendor/webgpu/include/webgpu", "-Ivendor/webgpu/include", "-DRESOURCE_DIR=\"../resources\"", "-DWGPU_TARGET=WGPU_TARGET_LINUX_X11", "-DGLFW_EXPOSE_NATIVE_X11", "-DWEBGPU_BACKEND_WGPU", "-o", "build/.objs/wgpu-imgui-app/linux/x86_64/debug/src/ImGui/ImGuiBuild.cpp.o", "src/ImGui/ImGuiBuild.cpp"],
-  "file": "src/ImGui/ImGuiBuild.cpp"
-},
-{
-  "directory": "/home/vagrant/workspace/cxx/LearnWebGPU-Code",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Ivendor", "-Isrc", "-Ivendor/glfw", "-Ivendor/imgui", "-Ivendor/glfw3webgpu", "-Ivendor/webgpu/include/webgpu", "-Ivendor/webgpu/include", "-DRESOURCE_DIR=\"../resources\"", "-DWGPU_TARGET=WGPU_TARGET_LINUX_X11", "-DGLFW_EXPOSE_NATIVE_X11", "-DWEBGPU_BACKEND_WGPU", "-o", "build/.objs/wgpu-imgui-app/linux/x86_64/debug/src/ImGui/ImGuiTheme.cpp.o", "src/ImGui/ImGuiTheme.cpp"],
-  "file": "src/ImGui/ImGuiTheme.cpp"
-},
-{
-  "directory": "/home/vagrant/workspace/cxx/LearnWebGPU-Code",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Ivendor", "-Isrc", "-Ivendor/glfw", "-Ivendor/imgui", "-Ivendor/glfw3webgpu", "-Ivendor/webgpu/include/webgpu", "-Ivendor/webgpu/include", "-DRESOURCE_DIR=\"../resources\"", "-DWGPU_TARGET=WGPU_TARGET_LINUX_X11", "-DGLFW_EXPOSE_NATIVE_X11", "-DWEBGPU_BACKEND_WGPU", "-o", "build/.objs/wgpu-imgui-app/linux/x86_64/debug/src/Application.cpp.o", "src/Application.cpp"],
-  "file": "src/Application.cpp"
-},
-{
-  "directory": "/home/vagrant/workspace/cxx/LearnWebGPU-Code",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Ivendor", "-Isrc", "-Ivendor/glfw", "-Ivendor/imgui", "-Ivendor/glfw3webgpu", "-Ivendor/webgpu/include/webgpu", "-Ivendor/webgpu/include", "-DRESOURCE_DIR=\"../resources\"", "-DWGPU_TARGET=WGPU_TARGET_LINUX_X11", "-DGLFW_EXPOSE_NATIVE_X11", "-DWEBGPU_BACKEND_WGPU", "-o", "build/.objs/wgpu-imgui-app/linux/x86_64/debug/src/ResourceManager.cpp.o", "src/ResourceManager.cpp"],
-  "file": "src/ResourceManager.cpp"
-},
-{
-  "directory": "/home/vagrant/workspace/cxx/LearnWebGPU-Code",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Ivendor", "-Isrc", "-Ivendor/glfw", "-Ivendor/imgui", "-Ivendor/glfw3webgpu", "-Ivendor/webgpu/include/webgpu", "-Ivendor/webgpu/include", "-DRESOURCE_DIR=\"../resources\"", "-DWGPU_TARGET=WGPU_TARGET_LINUX_X11", "-DGLFW_EXPOSE_NATIVE_X11", "-DWEBGPU_BACKEND_WGPU", "-o", "build/.objs/wgpu-imgui-app/linux/x86_64/debug/src/Renderer.cpp.o", "src/Renderer.cpp"],
-  "file": "src/Renderer.cpp"
-},
-{
-  "directory": "/home/vagrant/workspace/cxx/LearnWebGPU-Code",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Ivendor", "-Isrc", "-Ivendor/glfw", "-Ivendor/imgui", "-Ivendor/glfw3webgpu", "-Ivendor/webgpu/include/webgpu", "-Ivendor/webgpu/include", "-DRESOURCE_DIR=\"../resources\"", "-DWGPU_TARGET=WGPU_TARGET_LINUX_X11", "-DGLFW_EXPOSE_NATIVE_X11", "-DWEBGPU_BACKEND_WGPU", "-o", "build/.objs/wgpu-imgui-app/linux/x86_64/debug/src/ViewportRenderer.cpp.o", "src/ViewportRenderer.cpp"],
-  "file": "src/ViewportRenderer.cpp"
-},
-{
-  "directory": "/home/vagrant/workspace/cxx/LearnWebGPU-Code",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Ivendor", "-Isrc", "-Ivendor/glfw", "-Ivendor/imgui", "-Ivendor/glfw3webgpu", "-Ivendor/webgpu/include/webgpu", "-Ivendor/webgpu/include", "-DRESOURCE_DIR=\"../resources\"", "-DWGPU_TARGET=WGPU_TARGET_LINUX_X11", "-DGLFW_EXPOSE_NATIVE_X11", "-DWEBGPU_BACKEND_WGPU", "-o", "build/.objs/wgpu-imgui-app/linux/x86_64/debug/src/Camera.cpp.o", "src/Camera.cpp"],
-  "file": "src/Camera.cpp"
-},
-{
-  "directory": "/home/vagrant/workspace/cxx/LearnWebGPU-Code",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Ivendor", "-Isrc", "-Ivendor/glfw", "-Ivendor/imgui", "-Ivendor/glfw3webgpu", "-Ivendor/webgpu/include/webgpu", "-Ivendor/webgpu/include", "-DRESOURCE_DIR=\"../resources\"", "-DWGPU_TARGET=WGPU_TARGET_LINUX_X11", "-DGLFW_EXPOSE_NATIVE_X11", "-DWEBGPU_BACKEND_WGPU", "-o", "build/.objs/wgpu-imgui-app/linux/x86_64/debug/src/main.cpp.o", "src/main.cpp"],
-  "file": "src/main.cpp"
-},
-{
-  "directory": "/home/vagrant/workspace/cxx/LearnWebGPU-Code",
-  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Ivendor", "-Isrc", "-Ivendor/glfw", "-Ivendor/imgui", "-Ivendor/glfw3webgpu", "-Ivendor/webgpu/include/webgpu", "-Ivendor/webgpu/include", "-DRESOURCE_DIR=\"../resources\"", "-DWGPU_TARGET=WGPU_TARGET_LINUX_X11", "-DGLFW_EXPOSE_NATIVE_X11", "-DWEBGPU_BACKEND_WGPU", "-o", "build/.objs/wgpu-imgui-app/linux/x86_64/debug/src/implementations.cpp.o", "src/implementations.cpp"],
-  "file": "src/implementations.cpp"
 }]

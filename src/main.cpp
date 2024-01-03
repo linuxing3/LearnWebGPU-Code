@@ -38,8 +38,12 @@ int main(int, char **) {
   std::shared_ptr<ViewportLayer> vpLayer = std::make_shared<ViewportLayer>();
   app->PushLayer(vpLayer);
   while (app->isRunning()) {
-    /* app->onFrame(); */
+/* #define WEBGPU_COMPUTE */
+#ifdef WEBGPU_COMPUTE
     app->onCompute();
+#else
+    app->onFrame();
+#endif // DEBUG
   }
 
   app->onFinish();
