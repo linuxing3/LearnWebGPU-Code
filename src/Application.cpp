@@ -163,6 +163,8 @@ bool Application::onInit() {
   m_swapChainFormat = m_surface.getPreferredFormat(adapter);
   buildSwapChain();
 
+  // Create pipeline
+
   std::cout << "Creating shader module..." << std::endl;
   ShaderModule shaderModule =
       ResourceManager::loadShaderModule(RESOURCE_DIR "/shader.wsl", m_device);
@@ -418,38 +420,39 @@ void Application::onFrame() {
   glfwPollEvents();
   Queue queue = m_device.getQueue();
 
+  // Update Lighting, drag, uniform buffer
   updateLighting();
   updateDragInertia();
-
-  // Update uniform buffer
   m_uniforms.time = static_cast<float>(glfwGetTime());
   queue.writeBuffer(m_uniformBuffer, offsetof(MyUniforms, time),
                     &m_uniforms.time, sizeof(MyUniforms::time));
 
-  TextureView nextTexture = s_Instance->m_swapChain.getCurrentTextureView();
-  if (!nextTexture) {
-    std::cerr << "Cannot acquire next swap chain texture" << std::endl;
-  }
-  s_Instance->Get()->m_currentTextureView = nextTexture;
-
-  auto command = RunSingleCommand([&](RenderPassEncoder renderPass) {
-    renderPass.setPipeline(m_pipeline);
-    renderPass.setVertexBuffer(0, m_vertexBuffer, 0,
-                               m_vertexData.size() * sizeof(VertexAttributes));
-    renderPass.setBindGroup(0, m_bindGroup, 0, nullptr);
-    renderPass.draw(m_indexCount, 1, 0, 0);
-
-    for (auto layer : m_LayerStack) {
-      layer->OnUpdate(m_uniforms.time);
+  {
+    TextureView nextTexture = s_Instance->m_swapChain.getCurrentTextureView();
+    if (!nextTexture) {
+      std::cerr << "Cannot acquire next swap chain texture" << std::endl;
     }
+    s_Instance->Get()->m_currentTextureView = nextTexture;
 
-    updateGui(renderPass);
-    renderPass.end();
-  });
+    auto command = RunSingleCommand([&](RenderPassEncoder renderPass) {
+      renderPass.setPipeline(m_pipeline);
+      renderPass.setVertexBuffer(
+          0, m_vertexBuffer, 0, m_vertexData.size() * sizeof(VertexAttributes));
+      renderPass.setBindGroup(0, m_bindGroup, 0, nullptr);
+      renderPass.draw(m_indexCount, 1, 0, 0);
 
-  wgpuTextureViewDrop(nextTexture);
-  queue.submit(command);
-  m_swapChain.present();
+      for (auto layer : m_LayerStack) {
+        layer->OnUpdate(m_uniforms.time);
+      }
+
+      updateGui(renderPass);
+      renderPass.end();
+    });
+
+    wgpuTextureViewDrop(nextTexture);
+    queue.submit(command);
+    m_swapChain.present();
+  }
 }
 
 void Application::onFinish() {

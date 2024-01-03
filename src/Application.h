@@ -38,6 +38,9 @@
 #include <array>
 #include <filesystem>
 
+using namespace wgpu;
+using namespace std;
+
 class Application {
 public:
   Application();
@@ -64,19 +67,18 @@ public:
   // A function that tells if the application is still running.
   bool isRunning();
 
-  wgpu::Device GetDevice() { return m_device; };
-  wgpu::Queue GetQueue() { return m_device.getQueue(); };
+  Device GetDevice() { return m_device; };
+  Queue GetQueue() { return m_device.getQueue(); };
 
   GLFWwindow *GetWindowHandle() { return m_window; };
 
-  wgpu::TextureView GetCurrentTextureView() { return m_currentTextureView; }
-  wgpu::TextureView GetCurrentDepthView() { return m_depthTextureView; }
-  std::vector<wgpu::BindGroupEntry> GetBindings() { return m_bindings; };
+  TextureView GetCurrentTextureView() { return m_currentTextureView; }
+  TextureView GetCurrentDepthView() { return m_depthTextureView; }
+  vector<BindGroupEntry> GetBindings() { return m_bindings; };
 
-  static wgpu::CommandBuffer RunSingleCommand(
-      std::function<void(wgpu::RenderPassEncoder renderPass)> &&renderFunc);
-  static wgpu::CommandBuffer
-  RunSingleCommand(std::function<void()> &&prepareFunc);
+  static CommandBuffer
+  RunSingleCommand(function<void(RenderPassEncoder renderPass)> &&renderFunc);
+  static CommandBuffer RunSingleCommand(function<void()> &&prepareFunc);
 
 private:
   void buildWindow();
@@ -87,10 +89,10 @@ private:
   void updateViewMatrix();
   void updateDragInertia();
 
-  void initGui();                                     // called in onInit
-  void updateGui(wgpu::RenderPassEncoder renderPass); // called in onFrame
+  void initGui();                               // called in onInit
+  void updateGui(RenderPassEncoder renderPass); // called in onFrame
 
-  bool initTexture(const std::filesystem::path &path);
+  bool initTexture(const filesystem::path &path);
 
   void initLighting();
   void updateLighting();
@@ -100,7 +102,34 @@ private:
   using vec3 = glm::vec3;
   using vec4 = glm::vec4;
   using mat4x4 = glm::mat4x4;
+  TextureFormat m_swapChainFormat = TextureFormat::RGBA8Unorm;
+  TextureFormat m_depthTextureFormat = TextureFormat::Depth24Plus;
 
+  // Everything that is initialized in `onInit` and needed in `onFrame`.
+  GLFWwindow *m_window = nullptr;
+  Instance m_instance = nullptr;
+  Surface m_surface = nullptr;
+  Device m_device = nullptr;
+
+  SwapChainDescriptor m_swapChainDesc{};
+  SwapChain m_swapChain = nullptr;
+
+  RenderPipeline m_pipeline = nullptr;
+
+  // --------------------------------------------------------
+  // BindGroup = BindGroupLayoutEntry + BindingGroupEntry
+  // --------------------------------------------------------
+  BindGroup m_bindGroup = nullptr;
+  vector<BindGroupEntry> m_bindings;
+  vector<BindGroupLayoutEntry> m_bindingLayoutEntries;
+
+  // --------------------------------------------------------
+  // Vertex part
+  vector<ResourceManager::VertexAttributes> m_vertexData;
+  Buffer m_vertexBuffer = nullptr;
+  int m_indexCount;
+
+  // @group(0) @binding(0) var<uniform> uMyUniforms : MyUniforms;
   struct MyUniforms {
     mat4x4 projectionMatrix;
     mat4x4 viewMatrix;
@@ -111,46 +140,38 @@ private:
   };
   static_assert(sizeof(MyUniforms) % 16 == 0);
 
-  wgpu::TextureView m_currentTextureView = nullptr;
-  wgpu::TextureView m_depthTextureView = nullptr;
-  // Everything that is initialized in `onInit` and needed in `onFrame`.
-  GLFWwindow *m_window = nullptr;
-  wgpu::Instance m_instance = nullptr;
-  wgpu::Surface m_surface = nullptr;
-  wgpu::TextureFormat m_swapChainFormat = wgpu::TextureFormat::RGBA8Unorm;
-  wgpu::TextureFormat m_depthTextureFormat = wgpu::TextureFormat::Depth24Plus;
-  wgpu::Device m_device = nullptr;
-  wgpu::SwapChain m_swapChain = nullptr;
-  wgpu::Buffer m_uniformBuffer = nullptr;
-  wgpu::RenderPipeline m_pipeline = nullptr;
-  wgpu::Buffer m_vertexBuffer = nullptr;
-  wgpu::BindGroup m_bindGroup = nullptr;
-  std::vector<wgpu::Texture> m_textures;
-  wgpu::Texture m_depthTexture = nullptr;
-  wgpu::SwapChainDescriptor m_swapChainDesc{};
+  Buffer m_uniformBuffer = nullptr;
   MyUniforms m_uniforms;
-  std::vector<ResourceManager::VertexAttributes> m_vertexData;
-  int m_indexCount;
-  std::unique_ptr<wgpu::ErrorCallback> m_uncapturedErrorCallback;
 
-  std::vector<wgpu::BindGroupLayoutEntry> m_bindingLayoutEntries;
-  // NOTE: texture data are here
-  std::vector<wgpu::BindGroupEntry> m_bindings;
+  // --------------------------------------------------------
+  // Fragement part
+  // --------------------------------------------------------
+  // @group(0) @binding(1) var textureSampler : sampler;
 
-  // Lighting
+  // @group(0) @binding(2) var baseColorTexture : texture_2d<f32>;
+  vector<Texture> m_textures;
+  TextureView m_currentTextureView = nullptr;
+  Texture m_depthTexture = nullptr;
+  TextureView m_depthTextureView = nullptr;
+
+  // @group(0) @binding(3) var<uniform> uLighting : LightingUniforms;
   struct LightingUniforms {
-    std::array<vec4, 2> directions;
-    std::array<vec4, 2> colors;
+    array<vec4, 2> directions;
+    array<vec4, 2> colors;
     float hardness;
     float kd;
     float ks;
     float _pad;
   };
   static_assert(sizeof(LightingUniforms) % 16 == 0);
-  wgpu::Buffer m_lightingUniformBuffer = nullptr;
   LightingUniforms m_lightingUniforms;
+  Buffer m_lightingUniformBuffer = nullptr;
   bool m_lightingUniformsChanged = false;
+  // --------------------------------------------------------
 
+  // --------------------------------------------------------
+  // Camera & Animation control
+  // --------------------------------------------------------
   struct CameraState {
     // angles.x is the rotation of the camera around the global vertical axis,
     // affected by mouse.x angles.y is the rotation of the camera around its
@@ -182,18 +203,21 @@ private:
 
   CameraState m_cameraState;
   DragState m_drag;
+  // --------------------------------------------------------
+
+  unique_ptr<ErrorCallback> m_uncapturedErrorCallback;
 
 public:
+  vector<shared_ptr<Walnut::Layer>> m_LayerStack;
+
   template <typename T> void PushLayer() {
-    static_assert(std::is_base_of<Walnut::Layer, T>::value,
+    static_assert(is_base_of<Walnut::Layer, T>::value,
                   "Pushed type is not subclass of Layer!");
-    m_LayerStack.emplace_back(std::make_shared<T>())->OnAttach();
+    m_LayerStack.emplace_back(make_shared<T>())->OnAttach();
   }
 
-  void PushLayer(const std::shared_ptr<Walnut::Layer> &layer) {
+  void PushLayer(const shared_ptr<Walnut::Layer> &layer) {
     m_LayerStack.emplace_back(layer);
     layer->OnAttach();
   }
-
-  std::vector<std::shared_ptr<Walnut::Layer>> m_LayerStack;
 };
