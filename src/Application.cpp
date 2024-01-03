@@ -28,6 +28,7 @@
 #include "ResourceManager.h"
 
 #include "glfw3webgpu.h"
+#include "webgpu.h"
 #include <GLFW/glfw3.h>
 
 #define GLM_FORCE_LEFT_HANDED
@@ -385,15 +386,6 @@ void Application::buildComputePipeline() {
       RESOURCE_DIR "/compute_shader.wsl", m_device);
   std::cout << "Shader module: " << computerShaderModule << std::endl;
 
-  // ---------------------------------------------------------//
-  // [GPU] Create binding layout
-  m_computeBindingLayoutEntries.resize(1, Default);
-
-  BindGroupLayoutEntry &bindingLayout = m_computeBindingLayoutEntries[0];
-  bindingLayout.binding = 0;
-  bindingLayout.visibility = ShaderStage::Compute;
-  bindingLayout.buffer.type = BufferBindingType::Storage;
-
   ComputePipelineDescriptor computePipelineDescriptor;
   computePipelineDescriptor.compute.module = computerShaderModule;
   computePipelineDescriptor.compute.entryPoint = "main";
@@ -419,6 +411,49 @@ void Application::buildComputePipeline() {
     std::cout << "create compute pipeline failed";
   }
   std::cout << "Compute pipeline: " << &m_computePipeline << "\n";
+
+  // [GPU] Create bindgroup
+  BufferDescriptor descriptor{};
+  descriptor.size = 1000;
+  descriptor.usage = WGPUBufferUsage::WGPUBufferUsage_Storage |
+                     WGPUBufferUsage::WGPUBufferUsage_CopySrc;
+  auto computeBuffer = m_device.createBuffer(descriptor);
+
+  BufferDescriptor stage_descriptor{};
+  stage_descriptor.size = 1000;
+  stage_descriptor.usage = WGPUBufferUsage::WGPUBufferUsage_Storage |
+                           WGPUBufferUsage::WGPUBufferUsage_CopyDst;
+  auto computeStagingBuffer = m_device.createBuffer(stage_descriptor);
+
+  // ---------------------------------------------------------//
+  // [GPU] Create binding layout
+  m_computeBindingLayoutEntries.resize(1, Default);
+
+  BindGroupLayoutEntry &bindingLayout = m_computeBindingLayoutEntries[0];
+  bindingLayout.binding = 0;
+  bindingLayout.visibility = ShaderStage::Compute;
+  bindingLayout.buffer.type = BufferBindingType::Storage;
+
+  // [GPU] Create bindgroup entries
+  m_computeBindingEntries.resize(1);
+
+  /* var<storage, read_write> v_indices: array<u32>; */
+  m_computeBindingEntries[0].binding = 0;
+  m_computeBindingEntries[0].buffer = computeBuffer;
+  m_computeBindingEntries[0].offset = 0;
+  m_computeBindingEntries[0].size = 1000;
+  // ---------------------------------------------------------//
+
+  BindGroupDescriptor bindGroupDesc{};
+  bindGroupDesc.layout = computeBindGroupLayout;
+  bindGroupDesc.entries = m_computeBindingEntries.data();
+
+  // [GPU] Create bindgroup
+  auto computeBindGroup = m_device.createBindGroup(bindGroupDesc);
+  if (!computeBindGroup) {
+    std::cout << "create compute pipeline failed";
+  }
+  std::cout << "Compute pipeline: " << &computeBindGroup << "\n";
 }
 
 void Application::buildSwapChain() {
@@ -575,6 +610,20 @@ void Application::onFrame() {
       renderPass.end();
     });
 
+    // TODO: compute pipeline
+    // CommandEncoderDescriptor commandEncoderDesc{};
+    // auto commandEncoder = m_device.createCommandEncoder(commandEncoderDesc);
+    // ComputePassDescriptor computePassDesc{};
+    // auto passEncoder = commandEncoder.beginComputePass(computePassDesc);
+    // passEncoder.setPipeline(m_computePipeline);
+    // passEncoder.setBindGroup(0, m_computeBindGroup, 0);
+    // passEncoder.end();
+
+    // CommandBufferDescriptor CommandBufferDesc{};
+    // auto computeCommand = commandEncoder.finish(CommandBufferDesc);
+    // queue.submit(computeCommand);
+
+    // submit and present
     wgpuTextureViewDrop(nextTexture);
     queue.submit(command);
     m_swapChain.present();
