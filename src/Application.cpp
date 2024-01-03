@@ -426,6 +426,12 @@ void Application::onFrame() {
   queue.writeBuffer(m_uniformBuffer, offsetof(MyUniforms, time),
                     &m_uniforms.time, sizeof(MyUniforms::time));
 
+  TextureView nextTexture = s_Instance->m_swapChain.getCurrentTextureView();
+  if (!nextTexture) {
+    std::cerr << "Cannot acquire next swap chain texture" << std::endl;
+  }
+  s_Instance->Get()->m_currentTextureView = nextTexture;
+
   auto command = RunSingleCommand([&](RenderPassEncoder renderPass) {
     renderPass.setPipeline(m_pipeline);
     renderPass.setVertexBuffer(0, m_vertexBuffer, 0,
@@ -441,8 +447,8 @@ void Application::onFrame() {
     renderPass.end();
   });
 
+  wgpuTextureViewDrop(nextTexture);
   queue.submit(command);
-
   m_swapChain.present();
 }
 
@@ -716,11 +722,6 @@ Application::RunSingleCommand(std::function<void()> &&prepareFunc) {
 wgpu::CommandBuffer Application::RunSingleCommand(
     std::function<void(RenderPassEncoder renderPass)> &&renderFunc) {
 
-  TextureView nextTexture = s_Instance->m_swapChain.getCurrentTextureView();
-  if (!nextTexture) {
-    std::cerr << "Cannot acquire next swap chain texture" << std::endl;
-  }
-
   CommandEncoderDescriptor commandEncoderDesc{};
   commandEncoderDesc.label = "Command Encoder";
   CommandEncoder encoder =
@@ -729,7 +730,7 @@ wgpu::CommandBuffer Application::RunSingleCommand(
   RenderPassDescriptor renderPassDesc{};
 
   RenderPassColorAttachment colorAttachment;
-  colorAttachment.view = nextTexture;
+  colorAttachment.view = s_Instance->Get()->m_currentTextureView;
   colorAttachment.resolveTarget = nullptr;
   colorAttachment.loadOp = LoadOp::Clear;
   colorAttachment.storeOp = StoreOp::Store;
@@ -756,6 +757,5 @@ wgpu::CommandBuffer Application::RunSingleCommand(
   renderFunc(renderPass);
 
   CommandBuffer command = encoder.finish(CommandBufferDescriptor{});
-  wgpuTextureViewDrop(nextTexture);
   return command;
 };

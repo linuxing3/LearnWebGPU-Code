@@ -26,14 +26,17 @@
 
 #include "Application.h"
 #include "RayLayer.h"
+#include "ViewportLayer.h"
 
 int main(int, char **) {
   auto *app = new Application();
   app->onInit();
 
   // NOTE:
-  std::shared_ptr<RayLayer> rayLayer = std::make_shared<RayLayer>();
-  app->PushLayer(rayLayer);
+  /* std::shared_ptr<RayLayer> rayLayer = std::make_shared<RayLayer>(); */
+  /* app->PushLayer(rayLayer); */
+  std::shared_ptr<ViewportLayer> vpLayer = std::make_shared<ViewportLayer>();
+  app->PushLayer(vpLayer);
   while (app->isRunning()) {
     app->onFrame();
   }

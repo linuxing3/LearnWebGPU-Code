@@ -1,3 +1,4 @@
+--- @diagnostic disable:undefined-global
 add_rules('mode.debug', 'mode.release')
 
 includes('vendor/imgui')

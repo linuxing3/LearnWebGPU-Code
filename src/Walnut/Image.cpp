@@ -11,6 +11,7 @@
 /* #define STB_IMAGE_IMPLEMENTATION */
 /* #endif // !STB_IMAGE_IMPLEMENTATION */
 #include "stb_image.h"
+#include "webgpu.hpp"
 
 using namespace wgpu;
 
@@ -28,7 +29,7 @@ static uint32_t bit_width(uint32_t m) {
     return w;
   }
 }
-static uint32_t BytesPerPixel(TextureFormat format) {
+static uint32_t BytesPerPixel(WGPUTextureFormat format) {
   if (format == TextureFormat::RGBA8Unorm)
     return 4;
   if (format == TextureFormat::RGBA32Float)
@@ -71,29 +72,35 @@ Image::Image(std::string_view path) : m_Filepath(path) {
   m_Height = height;
   m_Format = TextureFormat::RGBA8Unorm;
 
-  AllocateMemory(m_Width * m_Height * 4);
+  AllocateMemory();
   SetData(data);
   stbi_image_free(data);
 }
 
-Image::Image(uint32_t width, uint32_t height, wgpu::TextureFormat format,
+Image::Image(uint32_t width, uint32_t height, TextureFormat format,
              const void *data)
     : m_Width(width), m_Height(height) {
-  AllocateMemory(m_Width * m_Height * Utils::BytesPerPixel(format));
+  AllocateMemory();
   if (data)
     SetData(data);
 }
 
-Image::Image(uint32_t width, uint32_t height, Walnut::ImageFormat format,
+Image::Image(uint32_t width, uint32_t height, ImageFormat format,
              const void *data)
     : m_Width(width), m_Height(height) {
-  AllocateMemory(m_Width * m_Height * Utils::BytesPerPixel(format));
+  AllocateMemory();
   if (data)
     SetData(data);
 }
+
 Image::~Image() { Release(); }
 
-void Image::AllocateMemory(uint64_t size) {
+void Image::SetImageViewId(WGPUTextureView *textView) {
+  m_ImageView = *textView;
+  m_DescriptorSet = (VkDescriptorSet)(ImTextureID)m_ImageView;
+}
+
+void Image::AllocateMemory() {
   wgpu::Device device = Application::Get()->GetDevice();
 
 #define IMGUI_WGPU
@@ -107,8 +114,8 @@ void Image::AllocateMemory(uint64_t size) {
     WGPUTextureDescriptor tex_desc = {};
     tex_desc.label = "Dear ImGui General Texture";
     tex_desc.dimension = WGPUTextureDimension_2D;
-    tex_desc.size.width = m_Width;
-    tex_desc.size.height = m_Height;
+    tex_desc.size.width = m_Width;   // width here
+    tex_desc.size.height = m_Height; // height here
     tex_desc.size.depthOrArrayLayers = 1;
     tex_desc.sampleCount = 1;
     tex_desc.format = WGPUTextureFormat_RGBA8Unorm;
@@ -167,7 +174,8 @@ void Image::Release() {
 
 void Image::SetData(const void *data) {
   wgpu::Device device = Application::Get()->GetDevice();
-  size_t size_pp = Utils::BytesPerPixel(m_Format); // RGBA8Unorm = 4 bytes
+  // size_pp: RGBA8Unorm = 4 bytes = 32 bits
+  size_t size_pp = Utils::BytesPerPixel(m_Format);
   size_t upload_size = m_Width * m_Height * size_pp;
 
 #ifdef IMGUI_WGPU
@@ -181,8 +189,8 @@ void Image::SetData(const void *data) {
     WGPUTextureDataLayout layout = {};
     layout.offset = 0;
     layout.bytesPerRow = m_Width * size_pp; // 列数 * 像素尺寸
-    layout.rowsPerImage = m_Height; // 行数
-    WGPUExtent3D size = {(uint32_t)m_Width, (uint32_t)m_Height, 1};
+    layout.rowsPerImage = m_Height;         // 行数
+    WGPUExtent3D size = {(uint32_t)m_Width, (uint32_t)m_Height, 1}; // size here
     // NOTE: write data to texture with specific size and layout
     wgpuQueueWriteTexture(device.getQueue(), &dst_view, data, upload_size,
                           &layout, &size);
@@ -201,7 +209,7 @@ void Image::Resize(uint32_t width, uint32_t height) {
   m_Height = height;
 
   Release();
-  AllocateMemory(m_Width * m_Height * Utils::BytesPerPixel(m_Format));
+  AllocateMemory();
 }
 
 void *Image::Decode(const void *buffer, uint64_t length, uint32_t &outWidth,

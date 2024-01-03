@@ -66,14 +66,23 @@ public:
 
   wgpu::Device GetDevice() { return m_device; };
   wgpu::Queue GetQueue() { return m_device.getQueue(); };
+
+  GLFWwindow *GetWindowHandle() { return m_window; };
+
+  wgpu::TextureView GetCurrentTextureView() { return m_currentTextureView; }
+  wgpu::TextureView GetCurrentDepthView() { return m_depthTextureView; }
+  std::vector<wgpu::BindGroupEntry> GetBindings() { return m_bindings; };
+
   static wgpu::CommandBuffer RunSingleCommand(
       std::function<void(wgpu::RenderPassEncoder renderPass)> &&renderFunc);
   static wgpu::CommandBuffer
   RunSingleCommand(std::function<void()> &&prepareFunc);
-  GLFWwindow *GetWindowHandle() { return m_window; };
 
 private:
+  void buildWindow();
+  void buildDeviceObject();
   void buildSwapChain();
+  void buildPipeline();
   void buildDepthBuffer();
   void updateViewMatrix();
   void updateDragInertia();
@@ -102,6 +111,8 @@ private:
   };
   static_assert(sizeof(MyUniforms) % 16 == 0);
 
+  wgpu::TextureView m_currentTextureView = nullptr;
+  wgpu::TextureView m_depthTextureView = nullptr;
   // Everything that is initialized in `onInit` and needed in `onFrame`.
   GLFWwindow *m_window = nullptr;
   wgpu::Instance m_instance = nullptr;
@@ -111,7 +122,6 @@ private:
   wgpu::Device m_device = nullptr;
   wgpu::SwapChain m_swapChain = nullptr;
   wgpu::Buffer m_uniformBuffer = nullptr;
-  wgpu::TextureView m_depthTextureView = nullptr;
   wgpu::RenderPipeline m_pipeline = nullptr;
   wgpu::Buffer m_vertexBuffer = nullptr;
   wgpu::BindGroup m_bindGroup = nullptr;
@@ -124,6 +134,7 @@ private:
   std::unique_ptr<wgpu::ErrorCallback> m_uncapturedErrorCallback;
 
   std::vector<wgpu::BindGroupLayoutEntry> m_bindingLayoutEntries;
+  // NOTE: texture data are here
   std::vector<wgpu::BindGroupEntry> m_bindings;
 
   // Lighting

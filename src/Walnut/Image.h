@@ -4,7 +4,9 @@
 #include <string_view>
 
 #include "Application.h"
+#include "imgui.h"
 #include "vulkan/vulkan.h"
+
 #include <webgpu.hpp>
 
 namespace Walnut {
@@ -22,7 +24,10 @@ public:
 
   void SetData(const void *data);
 
+  void SetImageViewId(WGPUTextureView *id);
   VkDescriptorSet GetDescriptorSet() const { return m_DescriptorSet; }
+  wgpu::TextureView GetImageViewId() const { return m_ImageView; }
+  ImTextureID GetTextureId() { return (ImTextureID)m_ImageView; }
 
   void Resize(uint32_t width, uint32_t height);
 
@@ -33,7 +38,7 @@ public:
                       uint32_t &outHeight);
 
 private:
-  void AllocateMemory(uint64_t size);
+  void AllocateMemory();
   void Release();
 
 private:
@@ -48,7 +53,6 @@ private:
   size_t m_AlignedSize = 0;
 
   VkDescriptorSet m_DescriptorSet = nullptr;
-
   std::string m_Filepath;
 };
 

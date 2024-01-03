@@ -7,13 +7,13 @@
 #include "Scene.h"
 #include "glm/fwd.hpp"
 
+#include <cstdint>
 #include <glm/ext/scalar_constants.hpp>
 #include <glm/glm.hpp>
 #include <memory>
-#include <cstdint>
 
 class Renderer {
- public:
+public:
   struct Settings {
     bool acumulate = true;
   };
@@ -29,7 +29,7 @@ class Renderer {
 
   Settings &GetSettings() { return m_Settings; }
 
- private:
+private:
   // Hit point info
   struct HitPayload {
     float HitDistance;
@@ -66,7 +66,7 @@ class Renderer {
   HitPayload ClosestHit(const Ray &ray, float hitDistance, int objectIndex);
   HitPayload Miss(const Ray &ray);
 
- private:
+private:
   std::shared_ptr<Walnut::Image> m_FinalImage;
 
   const Scene *m_ActiveScene = nullptr;

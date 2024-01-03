@@ -1,10 +1,11 @@
   [project-build]
-  command=cmake --build build
+  command=xmake
   # set the working directory to the project root.
   cwd=$(VIM_ROOT)
+  output=terminal
   
   [project-run]
-  command=./build/App
+  command=xmake run
   # <root> is an alias to `$(VIM_ROOT)`, a little easier to type.
   cwd=<root>
   output=terminal
