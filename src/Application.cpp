@@ -114,15 +114,12 @@ void Application::buildWindow() {
   glfwSetScrollCallback(m_window, onWindowScroll);
 }
 
-bool Application::onInit() {
-
-  buildWindow();
+void Application::buildDeviceObject() {
 
   // Create instance
   m_instance = createInstance(InstanceDescriptor{});
   if (!m_instance) {
     std::cerr << "Could not initialize WebGPU!" << std::endl;
-    return false;
   }
 
   // Create surface and adapter
@@ -160,13 +157,14 @@ bool Application::onInit() {
           std::cout << " (message: " << message << ")";
         std::cout << std::endl;
       });
-
-  Queue queue = m_device.getQueue();
-
   // Create swapchain
   m_swapChainFormat = m_surface.getPreferredFormat(adapter);
   buildSwapChain();
+}
 
+void Application::buildPipeline() {
+
+  Queue queue = m_device.getQueue();
   // Create pipeline
 
   std::cout << "Creating shader module..." << std::endl;
@@ -178,7 +176,6 @@ bool Application::onInit() {
       RESOURCE_DIR "/fourareen.obj", m_vertexData);
   if (!success) {
     std::cerr << "Could not load geometry!" << std::endl;
-    return true;
   }
 
   // Create vertex buffer
@@ -256,7 +253,8 @@ bool Application::onInit() {
   m_bindings[1].sampler = sampler;
 
   if (!initTexture(RESOURCE_DIR "/fourareen2K_albedo.jpg"))
-    return false;
+    cout << "Failed to init texture";
+
   initLighting();
 
   std::cout << "Creating render pipeline..." << std::endl;
@@ -367,10 +365,6 @@ bool Application::onInit() {
   bindGroupDesc.entryCount = (uint32_t)m_bindings.size();
   bindGroupDesc.entries = m_bindings.data();
   m_bindGroup = m_device.createBindGroup(bindGroupDesc);
-
-  initGui();
-
-  return true;
 }
 
 void Application::buildSwapChain() {
@@ -457,6 +451,14 @@ void Application::onFrame() {
     queue.submit(command);
     m_swapChain.present();
   }
+}
+
+bool Application::onInit() {
+  buildWindow();
+  buildDeviceObject();
+  buildPipeline();
+  initGui();
+  return true;
 }
 
 void Application::onFinish() {
