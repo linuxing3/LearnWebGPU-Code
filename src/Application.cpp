@@ -146,6 +146,7 @@ void Application::buildDeviceObject() {
   requiredLimits.limits.maxComputeWorkgroupSizeZ = 64;
   requiredLimits.limits.maxComputeInvocationsPerWorkgroup = 256;
   requiredLimits.limits.maxComputeWorkgroupsPerDimension = 256;
+  requiredLimits.limits.minStorageBufferOffsetAlignment = 256;
 
   // Create device
   DeviceDescriptor deviceDesc{};
@@ -381,17 +382,19 @@ void Application::buildRenderPipeline() {
 }
 
 void Application::buildComputePipeline() {
-  BufferDescriptor bufferDesc{};
-  bufferDesc.size = 1000;
-  bufferDesc.usage = WGPUBufferUsage::WGPUBufferUsage_Storage |
-                     WGPUBufferUsage::WGPUBufferUsage_CopySrc;
-  auto computeBuffer = m_device.createBuffer(bufferDesc);
+  BufferDescriptor storgeBufferDesc{};
+  storgeBufferDesc.size = 1000;
+  storgeBufferDesc.usage = WGPUBufferUsage::WGPUBufferUsage_Storage |
+                           WGPUBufferUsage::WGPUBufferUsage_CopySrc |
+                           WGPUBufferUsage::WGPUBufferUsage_CopyDst;
+  auto storageBuffer = m_device.createBuffer(storgeBufferDesc);
 
   BufferDescriptor stagingBufferDesc{};
   stagingBufferDesc.size = 1000;
   stagingBufferDesc.usage = WGPUBufferUsage::WGPUBufferUsage_Storage |
+                            WGPUBufferUsage::WGPUBufferUsage_CopySrc |
                             WGPUBufferUsage::WGPUBufferUsage_CopyDst;
-  auto computeStagingBuffer = m_device.createBuffer(stagingBufferDesc);
+  auto stagingBuffer = m_device.createBuffer(stagingBufferDesc);
 
   // [GPU] shader
   std::cout << "Creating compute shader module..." << std::endl;
@@ -403,27 +406,33 @@ void Application::buildComputePipeline() {
   ComputePipelineDescriptor computePipelineDes{};
   computePipelineDes.compute.module = computerShaderModule;
   computePipelineDes.compute.entryPoint = "main";
+  computePipelineDes.label = "compute pipeline 1";
   // ---------------------------------------------------------//
   // [GPU] Create binding layout
-  m_computeBindingLayoutEntries.resize(1);
+  m_computeBindingLayoutEntries.resize(1, Default);
+  std::cout << "computed Binding Layout Entries: "
+            << m_computeBindingLayoutEntries.size() << "\n";
   m_computeBindingLayoutEntries[0].binding = 0;
   m_computeBindingLayoutEntries[0].visibility = ShaderStage::Compute;
   m_computeBindingLayoutEntries[0].buffer.type = BufferBindingType::Storage;
+  m_computeBindingLayoutEntries[0].buffer.minBindingSize = sizeof(uint32_t);
 
   // [GPU] Create bindgroup entries
   m_computeBindingEntries.resize(1);
+  std::cout << "computed Binding Entries: " << m_computeBindingEntries.size()
+            << "\n";
   /* var<storage, read_write> v_indices: array<u32>; */
   m_computeBindingEntries[0].binding = 0;
-  m_computeBindingEntries[0].buffer = computeBuffer;
+  m_computeBindingEntries[0].buffer = storageBuffer;
   m_computeBindingEntries[0].offset = 0;
   m_computeBindingEntries[0].size = sizeof(uint32_t); // BUG: u32 is 4 bytes
   // ---------------------------------------------------------//
   // [GPU] Create a compute bind group layout
   BindGroupLayoutDescriptor computeBindGroupLayoutDesc{};
-  computeBindGroupLayoutDesc.entries = m_computeBindingLayoutEntries.data();
   computeBindGroupLayoutDesc.entryCount =
       (uint32_t)m_computeBindingLayoutEntries.size();
-  auto computeBindGroupLayout =
+  computeBindGroupLayoutDesc.entries = m_computeBindingLayoutEntries.data();
+  BindGroupLayout computeBindGroupLayout =
       m_device.createBindGroupLayout(computeBindGroupLayoutDesc);
   // ---------------------------------------------------------//
   // [GPU] Create the pipeline layout
@@ -604,20 +613,22 @@ void Application::onFrame() {
       renderPass.end();
     });
 
-    // TODO: compute pipeline
-    CommandEncoderDescriptor commandEncoderDesc{};
-    commandEncoderDesc.label = "computeCommandEncoder";
-    auto commandEncoder = m_device.createCommandEncoder(commandEncoderDesc);
-    ComputePassDescriptor computePassDesc{};
+    {
+      // TODO: compute pipeline
+      CommandEncoderDescriptor commandEncoderDesc{};
+      commandEncoderDesc.label = "computeCommandEncoder";
+      auto commandEncoder = m_device.createCommandEncoder(commandEncoderDesc);
+      ComputePassDescriptor computePassDesc{};
 
-    auto computePass = commandEncoder.beginComputePass(computePassDesc);
-    computePass.setPipeline(m_computePipeline);
-    computePass.setBindGroup(0, m_computeBindGroup, 0);
-    computePass.end();
+      auto computePass = commandEncoder.beginComputePass(computePassDesc);
+      computePass.setPipeline(m_computePipeline);
+      computePass.setBindGroup(0, m_computeBindGroup, 0, nullptr);
+      computePass.end();
 
-    CommandBufferDescriptor CommandBufferDesc{};
-    auto computeCommand = commandEncoder.finish(CommandBufferDesc);
-    queue.submit(computeCommand);
+      CommandBufferDescriptor CommandBufferDesc{};
+      auto computeCommand = commandEncoder.finish(CommandBufferDesc);
+      queue.submit(computeCommand);
+    }
 
     // submit and present
     wgpuTextureViewDrop(nextTexture);
