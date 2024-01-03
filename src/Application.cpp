@@ -92,17 +92,10 @@ void onWindowScroll(GLFWwindow *window, double xoffset, double yoffset) {
     pApp->onScroll(xoffset, yoffset);
 }
 
-bool Application::onInit() {
-  // Create instance
-  m_instance = createInstance(InstanceDescriptor{});
-  if (!m_instance) {
-    std::cerr << "Could not initialize WebGPU!" << std::endl;
-    return false;
-  }
+void Application::buildWindow() {
 
   if (!glfwInit()) {
     std::cerr << "Could not initialize GLFW!" << std::endl;
-    return false;
   }
 
   // Create window
@@ -111,7 +104,6 @@ bool Application::onInit() {
   m_window = glfwCreateWindow(1920, 1050, "Learn WebGPU", nullptr, nullptr);
   if (!m_window) {
     std::cerr << "Could not open window!" << std::endl;
-    return false;
   }
 
   // Add window callbacks
@@ -120,6 +112,18 @@ bool Application::onInit() {
   glfwSetCursorPosCallback(m_window, onWindowMouseMove);
   glfwSetMouseButtonCallback(m_window, onWindowMouseButton);
   glfwSetScrollCallback(m_window, onWindowScroll);
+}
+
+bool Application::onInit() {
+
+  buildWindow();
+
+  // Create instance
+  m_instance = createInstance(InstanceDescriptor{});
+  if (!m_instance) {
+    std::cerr << "Could not initialize WebGPU!" << std::endl;
+    return false;
+  }
 
   // Create surface and adapter
   std::cout << "Requesting adapter..." << std::endl;
