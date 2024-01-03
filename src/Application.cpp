@@ -139,6 +139,11 @@ void Application::buildDeviceObject() {
   requiredLimits.limits.maxBindGroups = 2;
   requiredLimits.limits.maxUniformBuffersPerShaderStage = 2;
   requiredLimits.limits.maxUniformBufferBindingSize = 16 * 4 * sizeof(float);
+  requiredLimits.limits.maxComputeWorkgroupSizeY = 256;
+  requiredLimits.limits.maxComputeWorkgroupSizeY = 256;
+  requiredLimits.limits.maxComputeWorkgroupSizeZ = 64;
+  requiredLimits.limits.maxComputeInvocationsPerWorkgroup = 256;
+  requiredLimits.limits.maxComputeWorkgroupsPerDimension = 256;
 
   // Create device
   DeviceDescriptor deviceDesc{};
@@ -162,7 +167,7 @@ void Application::buildDeviceObject() {
   buildSwapChain();
 }
 
-void Application::buildPipeline() {
+void Application::buildRenderPipeline() {
 
   Queue queue = m_device.getQueue();
   // Create pipeline
@@ -244,17 +249,17 @@ void Application::buildPipeline() {
 
   // ---------------------------------------------------------//
   // [GPU] Create bindgroup entries
-  m_bindings.resize(2);
+  m_bindingEntries.resize(2);
 
   /* @group(0) @binding(0) var<uniform> uMyUniforms: MyUniforms; */
-  m_bindings[0].binding = 0;
-  m_bindings[0].buffer = m_uniformBuffer;
-  m_bindings[0].offset = 0;
-  m_bindings[0].size = sizeof(MyUniforms);
+  m_bindingEntries[0].binding = 0;
+  m_bindingEntries[0].buffer = m_uniformBuffer;
+  m_bindingEntries[0].offset = 0;
+  m_bindingEntries[0].size = sizeof(MyUniforms);
 
   /* @group(0) @binding(1) var textureSampler : sampler; */
-  m_bindings[1].binding = 1;
-  m_bindings[1].sampler = sampler;
+  m_bindingEntries[1].binding = 1;
+  m_bindingEntries[1].sampler = sampler;
 
   /* @group(0) @binding(2) var baseColorTexture: texture_2d<f32>; */
   if (!initTexture(RESOURCE_DIR "/fourareen2K_albedo.jpg"))
@@ -368,9 +373,52 @@ void Application::buildPipeline() {
   // [GPU] Create bind group
   BindGroupDescriptor bindGroupDesc{};
   bindGroupDesc.layout = bindGroupLayout;
-  bindGroupDesc.entryCount = (uint32_t)m_bindings.size();
-  bindGroupDesc.entries = m_bindings.data();
+  bindGroupDesc.entryCount = (uint32_t)m_bindingEntries.size();
+  bindGroupDesc.entries = m_bindingEntries.data();
   m_bindGroup = m_device.createBindGroup(bindGroupDesc);
+}
+
+void Application::buildComputePipeline() {
+  // [GPU] shader
+  std::cout << "Creating compute shader module..." << std::endl;
+  ShaderModule computerShaderModule = ResourceManager::loadShaderModule(
+      RESOURCE_DIR "/compute_shader.wsl", m_device);
+  std::cout << "Shader module: " << computerShaderModule << std::endl;
+
+  // ---------------------------------------------------------//
+  // [GPU] Create binding layout
+  m_computeBindingLayoutEntries.resize(1, Default);
+
+  BindGroupLayoutEntry &bindingLayout = m_computeBindingLayoutEntries[0];
+  bindingLayout.binding = 0;
+  bindingLayout.visibility = ShaderStage::Compute;
+  bindingLayout.buffer.type = BufferBindingType::Storage;
+
+  ComputePipelineDescriptor computePipelineDescriptor;
+  computePipelineDescriptor.compute.module = computerShaderModule;
+  computePipelineDescriptor.compute.entryPoint = "main";
+  // ---------------------------------------------------------//
+  // [GPU] Create a compute bind group layout
+  BindGroupLayoutDescriptor bindGroupLayoutDesc{};
+  bindGroupLayoutDesc.entries = m_computeBindingLayoutEntries.data();
+  bindGroupLayoutDesc.entryCount = m_computeBindingLayoutEntries.size();
+
+  auto computeBindGroupLayout =
+      m_device.createBindGroupLayout(bindGroupLayoutDesc);
+  // ---------------------------------------------------------//
+  // [GPU] Create the pipeline layout
+  PipelineLayoutDescriptor layoutDesc{};
+  layoutDesc.bindGroupLayoutCount = 1;
+  layoutDesc.bindGroupLayouts = (WGPUBindGroupLayout *)&computeBindGroupLayout;
+  PipelineLayout pipelineLayout = m_device.createPipelineLayout(layoutDesc);
+  computePipelineDescriptor.layout = pipelineLayout;
+
+  m_computePipeline = m_device.createComputePipeline(computePipelineDescriptor);
+
+  if (!m_computePipeline) {
+    std::cout << "create compute pipeline failed";
+  }
+  std::cout << "Compute pipeline: " << &m_computePipeline << "\n";
 }
 
 void Application::buildSwapChain() {
@@ -442,7 +490,7 @@ bool Application::initTexture(const std::filesystem::path &path) {
   BindGroupEntry binding = Default;
   binding.binding = bindingIndex;
   binding.textureView = textureView;
-  m_bindings.push_back(binding);
+  m_bindingEntries.push_back(binding);
 
   return true;
 }
@@ -483,7 +531,7 @@ void Application::initLighting() {
   binding.buffer = m_lightingUniformBuffer;
   binding.offset = 0;
   binding.size = sizeof(LightingUniforms);
-  m_bindings.push_back(binding);
+  m_bindingEntries.push_back(binding);
 }
 
 void Application::updateLighting() {
@@ -536,7 +584,8 @@ void Application::onFrame() {
 bool Application::onInit() {
   buildWindow();
   buildDeviceObject();
-  buildPipeline();
+  buildRenderPipeline();
+  buildComputePipeline();
   initGui();
   return true;
 }

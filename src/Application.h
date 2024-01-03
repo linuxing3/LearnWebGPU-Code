@@ -74,7 +74,7 @@ public:
 
   TextureView GetCurrentTextureView() { return m_currentTextureView; }
   TextureView GetCurrentDepthView() { return m_depthTextureView; }
-  vector<BindGroupEntry> GetBindings() { return m_bindings; };
+  vector<BindGroupEntry> GetBindings() { return m_bindingEntries; };
 
   static CommandBuffer
   RunSingleCommand(function<void(RenderPassEncoder renderPass)> &&renderFunc);
@@ -84,7 +84,8 @@ private:
   void buildWindow();
   void buildDeviceObject();
   void buildSwapChain();
-  void buildPipeline();
+  void buildRenderPipeline();
+  void buildComputePipeline();
   void buildDepthBuffer();
   void updateViewMatrix();
   void updateDragInertia();
@@ -115,13 +116,18 @@ private:
   SwapChain m_swapChain = nullptr;
 
   RenderPipeline m_pipeline = nullptr;
+  ComputePipeline m_computePipeline = nullptr;
 
   // --------------------------------------------------------
   // BindGroup = BindGroupLayoutEntry + BindingGroupEntry
   // --------------------------------------------------------
   BindGroup m_bindGroup = nullptr;
-  vector<BindGroupEntry> m_bindings;
+  vector<BindGroupEntry> m_bindingEntries;
   vector<BindGroupLayoutEntry> m_bindingLayoutEntries;
+
+  BindGroup m_computeBindGroup = nullptr;
+  vector<BindGroupEntry> m_computeBindingEntries;
+  vector<BindGroupLayoutEntry> m_computeBindingLayoutEntries;
 
   // --------------------------------------------------------
   // Vertex part
