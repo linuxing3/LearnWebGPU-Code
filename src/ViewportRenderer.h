@@ -3,6 +3,7 @@
 #include "Walnut/Image.h"
 
 #include "Camera.h"
+#include "Ray.h"
 #include "Scene.h"
 #include "glm/fwd.hpp"
 
@@ -22,6 +23,35 @@ public:
 
 private:
   glm::vec4 PerPixel(uint32_t x, uint32_t y);
+  // Hit point info
+  struct HitPayload {
+    float HitDistance;
+    glm::vec3 WorldPosition;
+    glm::vec3 WorldNormal;
+    int ObjectIndex;
+
+    float u;
+    float v;
+
+    static void set_sphere_uv(const glm::vec3 &p, float &u, float &v) {
+      // p: a given point on the sphere of radius one, centered at the origin.
+      // u: returned value [0,1] of angle around the Y axis from X=-1.
+      // v: returned value [0,1] of angle from Y=-1 to Y=+1.
+      //     <1 0 0> yields <0.50 0.50>       <-1  0  0> yields <0.00 0.50>
+      //     <0 1 0> yields <0.50 1.00>       < 0 -1  0> yields <0.50 0.00>
+      //     <0 0 1> yields <0.25 0.50>       < 0  0 -1> yields <0.75 0.50>
+
+      auto theta = acos(-p.y);
+      auto phi = atan2(-p.z, p.x) + 3.1415926f;
+
+      u = phi / (2 * 3.1415926f);
+      v = theta / 3.1415926f;
+    }
+  };
+
+  HitPayload TraceRay(const Ray &ray);
+  HitPayload ClosestHit(const Ray &ray, float hitDistance, int objectIndex);
+  HitPayload Miss(const Ray &ray);
 
 private:
   std::shared_ptr<Walnut::Image> m_FinalImage;
