@@ -31,6 +31,7 @@
 #include "webgpu.h"
 #include <GLFW/glfw3.h>
 #include <cstdint>
+#include <sys/types.h>
 
 #define GLM_FORCE_LEFT_HANDED
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
@@ -381,84 +382,6 @@ void Application::buildRenderPipeline() {
   m_bindGroup = m_device.createBindGroup(bindGroupDesc);
 }
 
-void Application::buildComputePipeline() {
-  BufferDescriptor storgeBufferDesc{};
-  storgeBufferDesc.size = 1000;
-  storgeBufferDesc.usage = WGPUBufferUsage::WGPUBufferUsage_Storage |
-                           WGPUBufferUsage::WGPUBufferUsage_CopySrc |
-                           WGPUBufferUsage::WGPUBufferUsage_CopyDst;
-  auto storageBuffer = m_device.createBuffer(storgeBufferDesc);
-
-  BufferDescriptor stagingBufferDesc{};
-  stagingBufferDesc.size = 1000;
-  stagingBufferDesc.usage = WGPUBufferUsage::WGPUBufferUsage_Storage |
-                            WGPUBufferUsage::WGPUBufferUsage_CopySrc |
-                            WGPUBufferUsage::WGPUBufferUsage_CopyDst;
-  auto stagingBuffer = m_device.createBuffer(stagingBufferDesc);
-
-  // [GPU] shader
-  std::cout << "Creating compute shader module..." << std::endl;
-  ShaderModule computerShaderModule = ResourceManager::loadShaderModule(
-      RESOURCE_DIR "/compute_shader.wsl", m_device);
-  std::cout << "Shader module: " << computerShaderModule << std::endl;
-
-  std::cout << "Creating compute pipeline..." << std::endl;
-  ComputePipelineDescriptor computePipelineDes{};
-  computePipelineDes.compute.module = computerShaderModule;
-  computePipelineDes.compute.entryPoint = "main";
-  computePipelineDes.label = "compute pipeline 1";
-  // ---------------------------------------------------------//
-  // [GPU] Create binding layout
-  m_computeBindingLayoutEntries.resize(1, Default);
-  std::cout << "computed Binding Layout Entries: "
-            << m_computeBindingLayoutEntries.size() << "\n";
-  m_computeBindingLayoutEntries[0].binding = 0;
-  m_computeBindingLayoutEntries[0].visibility = ShaderStage::Compute;
-  m_computeBindingLayoutEntries[0].buffer.type = BufferBindingType::Storage;
-  m_computeBindingLayoutEntries[0].buffer.minBindingSize = sizeof(uint32_t);
-
-  // [GPU] Create bindgroup entries
-  m_computeBindingEntries.resize(1);
-  std::cout << "computed Binding Entries: " << m_computeBindingEntries.size()
-            << "\n";
-  /* var<storage, read_write> v_indices: array<u32>; */
-  m_computeBindingEntries[0].binding = 0;
-  m_computeBindingEntries[0].buffer = storageBuffer;
-  m_computeBindingEntries[0].offset = 0;
-  m_computeBindingEntries[0].size = sizeof(uint32_t); // BUG: u32 is 4 bytes
-  // ---------------------------------------------------------//
-  // [GPU] Create a compute bind group layout
-  BindGroupLayoutDescriptor computeBindGroupLayoutDesc{};
-  computeBindGroupLayoutDesc.entryCount =
-      (uint32_t)m_computeBindingLayoutEntries.size();
-  computeBindGroupLayoutDesc.entries = m_computeBindingLayoutEntries.data();
-  BindGroupLayout computeBindGroupLayout =
-      m_device.createBindGroupLayout(computeBindGroupLayoutDesc);
-  // ---------------------------------------------------------//
-  // [GPU] Create the pipeline layout
-  PipelineLayoutDescriptor computeLayoutDesc{};
-  computeLayoutDesc.bindGroupLayoutCount = 1;
-  computeLayoutDesc.bindGroupLayouts =
-      (WGPUBindGroupLayout *)&computeBindGroupLayout;
-  PipelineLayout computePipelineLayout =
-      m_device.createPipelineLayout(computeLayoutDesc);
-  computePipelineDes.layout = computePipelineLayout;
-
-  // ---------------------------------------------------------//
-  // [GPU] Create the pipeline
-  m_computePipeline = m_device.createComputePipeline(computePipelineDes);
-  std::cout << "Compute pipeline: " << m_computePipeline << "\n";
-
-  // ---------------------------------------------------------//
-  // [GPU] Create bindgroup
-  BindGroupDescriptor bindGroupDesc{};
-  bindGroupDesc.layout = computeBindGroupLayout;
-  bindGroupDesc.entries = m_computeBindingEntries.data();
-  bindGroupDesc.entryCount = (uint32_t)m_computeBindingEntries.size();
-  m_computeBindGroup = m_device.createBindGroup(bindGroupDesc);
-  std::cout << "Compute group: " << m_computeBindGroup << "\n";
-}
-
 void Application::buildSwapChain() {
   int width, height;
   glfwGetFramebufferSize(m_window, &width, &height);
@@ -613,23 +536,6 @@ void Application::onFrame() {
       renderPass.end();
     });
 
-    {
-      // TODO: compute pipeline
-      CommandEncoderDescriptor commandEncoderDesc{};
-      commandEncoderDesc.label = "computeCommandEncoder";
-      auto commandEncoder = m_device.createCommandEncoder(commandEncoderDesc);
-      ComputePassDescriptor computePassDesc{};
-
-      auto computePass = commandEncoder.beginComputePass(computePassDesc);
-      computePass.setPipeline(m_computePipeline);
-      computePass.setBindGroup(0, m_computeBindGroup, 0, nullptr);
-      computePass.end();
-
-      CommandBufferDescriptor CommandBufferDesc{};
-      auto computeCommand = commandEncoder.finish(CommandBufferDesc);
-      queue.submit(computeCommand);
-    }
-
     // submit and present
     wgpuTextureViewDrop(nextTexture);
     queue.submit(command);
@@ -637,12 +543,85 @@ void Application::onFrame() {
   }
 }
 
+void Application::onCompute() {
+  Queue queue = m_device.getQueue();
+
+  // Fill in input buffer
+  std::vector<float> input(m_bufferSize / sizeof(float));
+  for (int i = 0; i < input.size(); ++i) {
+    input[i] = 0.1f * i;
+  }
+  queue.writeBuffer(m_inputBuffer, 0, input.data(),
+                    input.size() * sizeof(float));
+
+  // Initialize a command encoder
+  CommandEncoderDescriptor encoderDesc = Default;
+  CommandEncoder encoder = m_device.createCommandEncoder(encoderDesc);
+
+  // Create compute pass
+  ComputePassDescriptor computePassDesc;
+  computePassDesc.timestampWriteCount = 0;
+  computePassDesc.timestampWrites = nullptr;
+  ComputePassEncoder computePass = encoder.beginComputePass(computePassDesc);
+
+  // Use compute pass
+  computePass.setPipeline(m_computePipeline);
+  computePass.setBindGroup(0, m_bindGroup, 0, nullptr);
+
+  uint32_t invocationCount = m_bufferSize / sizeof(uint32_t);
+  uint32_t workgroupSize = 32;
+  // This ceils invocationCount / workgroupSize
+  uint32_t workgroupCount =
+      (invocationCount + workgroupSize - 1) / workgroupSize;
+  computePass.dispatchWorkgroups(workgroupCount, 1, 1);
+
+  // Finalize compute pass
+  computePass.end();
+
+  // Before encoder.finish
+  encoder.copyBufferToBuffer(m_outputBuffer, 0, m_mapBuffer, 0, m_bufferSize);
+
+  // Encode and submit the GPU commands
+  CommandBuffer commands = encoder.finish(CommandBufferDescriptor{});
+  queue.submit(commands);
+
+  // Print output
+  bool done = false;
+  auto handle = m_mapBuffer.mapAsync(
+      MapMode::Read, 0, m_bufferSize, [&](BufferMapAsyncStatus status) {
+        if (status == BufferMapAsyncStatus::Success) {
+          const float *output =
+              (const float *)m_mapBuffer.getMappedRange(0, m_bufferSize);
+          for (int i = 0; i < input.size(); ++i) {
+            std::cout << "input " << input[i] << " became " << output[i]
+                      << std::endl;
+          }
+          m_mapBuffer.unmap();
+        }
+        done = true;
+      });
+
+  while (!done) {
+    // Checks for ongoing asynchronous operations and call their callbacks if
+    // needed
+#ifdef WEBGPU_BACKEND_WGPU
+    queue.submit(0, nullptr);
+#else
+#endif
+  }
+}
+
 bool Application::onInit() {
+  m_bufferSize = 64 * sizeof(float);
   buildWindow();
   buildDeviceObject();
-  buildRenderPipeline();
-  buildComputePipeline();
-  initGui();
+  /* buildRenderPipeline(); */
+  /* buildComputePipeline(); */
+  initComputeBindGroupLayout();
+  initComputePipeline();
+  initComputeBuffers();
+  initComputeBindGroup();
+  /* initGui(); */
   return true;
 }
 
@@ -655,6 +634,10 @@ void Application::onFinish() {
   }
   m_depthTexture.destroy();
 
+  terminateBindGroup();
+  terminateBuffers();
+  terminateComputePipeline();
+  terminateBindGroupLayout();
   glfwDestroyWindow(m_window);
   glfwTerminate();
 }
@@ -879,3 +862,202 @@ wgpu::CommandBuffer Application::RunSingleCommand(
   CommandBuffer command = encoder.finish(CommandBufferDescriptor{});
   return command;
 };
+
+void Application::initComputeBindGroup() {
+  // Create compute bind group
+  std::vector<BindGroupEntry> entries(2, Default);
+
+  // Input buffer
+  entries[0].binding = 0;
+  entries[0].buffer = m_inputBuffer;
+  entries[0].offset = 0;
+  entries[0].size = m_bufferSize;
+
+  // Output buffer
+  entries[1].binding = 1;
+  entries[1].buffer = m_outputBuffer;
+  entries[1].offset = 0;
+  entries[1].size = m_bufferSize;
+
+  BindGroupDescriptor bindGroupDesc;
+  bindGroupDesc.layout = m_bindGroupLayout;
+  bindGroupDesc.entryCount = (uint32_t)entries.size();
+  bindGroupDesc.entries = (WGPUBindGroupEntry *)entries.data();
+  m_bindGroup = m_device.createBindGroup(bindGroupDesc);
+}
+
+void Application::terminateBindGroup() {
+  /* wgpuBindGroupRelease(m_bindGroup);  */
+}
+
+void Application::initComputeBindGroupLayout() {
+  // Create bind group layout
+  std::vector<BindGroupLayoutEntry> bindings(2, Default);
+
+  // Input buffer
+  bindings[0].binding = 0;
+  bindings[0].buffer.type = BufferBindingType::ReadOnlyStorage;
+  bindings[0].visibility = ShaderStage::Compute;
+
+  // Output buffer
+  bindings[1].binding = 1;
+  bindings[1].buffer.type = BufferBindingType::Storage;
+  bindings[1].visibility = ShaderStage::Compute;
+
+  BindGroupLayoutDescriptor bindGroupLayoutDesc;
+  bindGroupLayoutDesc.entryCount = (uint32_t)bindings.size();
+  bindGroupLayoutDesc.entries = bindings.data();
+  m_bindGroupLayout = m_device.createBindGroupLayout(bindGroupLayoutDesc);
+}
+
+void Application::terminateBindGroupLayout() {
+  /* wgpuBindGroupLayoutRelease(m_bindGroupLayout); */
+}
+
+void Application::initComputePipeline() {
+  // Load compute shader
+  ShaderModule computeShaderModule = ResourceManager::loadShaderModule(
+      RESOURCE_DIR "/compute_shader.wsl", m_device);
+
+  // Create compute pipeline layout
+  PipelineLayoutDescriptor pipelineLayoutDesc;
+  pipelineLayoutDesc.bindGroupLayoutCount = 1;
+  pipelineLayoutDesc.bindGroupLayouts =
+      (WGPUBindGroupLayout *)&m_bindGroupLayout;
+  m_pipelineLayout = m_device.createPipelineLayout(pipelineLayoutDesc);
+
+  // Create compute pipeline
+  ComputePipelineDescriptor computePipelineDesc;
+  computePipelineDesc.compute.constantCount = 0;
+  computePipelineDesc.compute.constants = nullptr;
+  computePipelineDesc.compute.entryPoint = "computeStuff";
+  computePipelineDesc.compute.module = computeShaderModule;
+  computePipelineDesc.layout = m_pipelineLayout;
+  m_computePipeline = m_device.createComputePipeline(computePipelineDesc);
+}
+
+void Application::terminateComputePipeline() {
+  /* wgpuComputePipelineRelease(m_pipeline); */
+  /* wgpuPipelineLayoutRelease(m_pipelineLayout); */
+}
+
+void Application::initComputeBuffers() {
+  // Create input/output buffers
+  BufferDescriptor bufferDesc;
+  bufferDesc.mappedAtCreation = false;
+  bufferDesc.size = m_bufferSize;
+
+  bufferDesc.usage = BufferUsage::Storage | BufferUsage::CopyDst;
+  m_inputBuffer = m_device.createBuffer(bufferDesc);
+
+  bufferDesc.usage = BufferUsage::Storage | BufferUsage::CopySrc;
+  m_outputBuffer = m_device.createBuffer(bufferDesc);
+
+  // Create an intermediary buffer to which we copy the output and that can be
+  // used for reading into the CPU memory.
+  bufferDesc.usage = BufferUsage::CopyDst | BufferUsage::MapRead;
+  m_mapBuffer = m_device.createBuffer(bufferDesc);
+}
+
+void Application::terminateBuffers() {
+  m_inputBuffer.destroy();
+  /* wgpuBufferRelease(m_inputBuffer); */
+
+  m_outputBuffer.destroy();
+  /* wgpuBufferRelease(m_outputBuffer); */
+
+  m_mapBuffer.destroy();
+  /* wgpuBufferRelease(m_mapBuffer); */
+}
+
+void Application::buildComputePipeline() {
+  BufferDescriptor storgeBufferDesc{};
+  storgeBufferDesc.size = 1000;
+  storgeBufferDesc.usage = WGPUBufferUsage::WGPUBufferUsage_Storage |
+                           WGPUBufferUsage::WGPUBufferUsage_CopyDst |
+                           WGPUBufferUsage::WGPUBufferUsage_CopySrc;
+  auto storageBuffer = m_device.createBuffer(storgeBufferDesc);
+
+  BufferDescriptor stagingBufferDesc{};
+  stagingBufferDesc.size = 1000;
+  stagingBufferDesc.usage = WGPUBufferUsage::WGPUBufferUsage_Storage |
+                            WGPUBufferUsage::WGPUBufferUsage_CopyDst;
+  auto stagingBuffer = m_device.createBuffer(stagingBufferDesc);
+
+  // Fill in input buffer
+  std::vector<uint32_t> input(1000 / sizeof(uint32_t));
+  for (int i = 0; i < input.size(); ++i) {
+    input[i] = 0.1f * i;
+  }
+  s_Instance->GetQueue().writeBuffer(storageBuffer, 0, input.data(), 1000);
+
+  // [GPU] shader
+  std::cout << "Creating compute shader module..." << std::endl;
+  ShaderModule computerShaderModule = ResourceManager::loadShaderModule(
+      RESOURCE_DIR "/compute_shader.wsl", m_device);
+  std::cout << "Shader module: " << computerShaderModule << std::endl;
+
+  std::cout << "Creating compute pipeline..." << std::endl;
+  ComputePipelineDescriptor computePipelineDes{};
+  computePipelineDes.compute.module = computerShaderModule;
+  computePipelineDes.compute.entryPoint = "main";
+  computePipelineDes.label = "compute pipeline 1";
+  // ---------------------------------------------------------//
+  // [GPU] Create binding layout
+  m_computeBindingLayoutEntries.resize(2, Default);
+  std::cout << "computed Binding Layout Entries: "
+            << m_computeBindingLayoutEntries.size() << "\n";
+  m_computeBindingLayoutEntries[0].binding = 0;
+  m_computeBindingLayoutEntries[0].visibility = ShaderStage::Compute;
+  m_computeBindingLayoutEntries[0].buffer.type = BufferBindingType::Storage;
+  m_computeBindingLayoutEntries[0].buffer.minBindingSize = sizeof(uint32_t);
+  m_computeBindingLayoutEntries[1].binding = 1;
+  m_computeBindingLayoutEntries[1].visibility = ShaderStage::Compute;
+  m_computeBindingLayoutEntries[1].buffer.type = BufferBindingType::Storage;
+  m_computeBindingLayoutEntries[1].buffer.minBindingSize = sizeof(uint32_t);
+
+  // [GPU] Create bindgroup entries
+  m_computeBindingEntries.resize(2);
+  std::cout << "computed Binding Entries: " << m_computeBindingEntries.size()
+            << "\n";
+  /* var<storage, read_write> v_indices: array<u32>; */
+  m_computeBindingEntries[0].binding = 0;
+  m_computeBindingEntries[0].buffer = storageBuffer;
+  m_computeBindingEntries[0].offset = 0;
+  m_computeBindingEntries[0].size = sizeof(uint32_t); // BUG: u32 is 4 bytes
+  m_computeBindingEntries[1].binding = 1;
+  m_computeBindingEntries[1].buffer = stagingBuffer;
+  m_computeBindingEntries[1].offset = 0;
+  m_computeBindingEntries[1].size = sizeof(uint32_t); // BUG: u32 is 4 bytes
+  // ---------------------------------------------------------//
+  // [GPU] Create a compute bind group layout
+  BindGroupLayoutDescriptor computeBindGroupLayoutDesc{};
+  computeBindGroupLayoutDesc.entryCount =
+      (uint32_t)m_computeBindingLayoutEntries.size();
+  computeBindGroupLayoutDesc.entries = m_computeBindingLayoutEntries.data();
+  BindGroupLayout computeBindGroupLayout =
+      m_device.createBindGroupLayout(computeBindGroupLayoutDesc);
+  // ---------------------------------------------------------//
+  // [GPU] Create the pipeline layout
+  PipelineLayoutDescriptor computeLayoutDesc{};
+  computeLayoutDesc.bindGroupLayoutCount = 1;
+  computeLayoutDesc.bindGroupLayouts =
+      (WGPUBindGroupLayout *)&computeBindGroupLayout;
+  PipelineLayout computePipelineLayout =
+      m_device.createPipelineLayout(computeLayoutDesc);
+  computePipelineDes.layout = computePipelineLayout;
+
+  // ---------------------------------------------------------//
+  // [GPU] Create the pipeline
+  m_computePipeline = m_device.createComputePipeline(computePipelineDes);
+  std::cout << "Compute pipeline: " << m_computePipeline << "\n";
+
+  // ---------------------------------------------------------//
+  // [GPU] Create bindgroup
+  BindGroupDescriptor bindGroupDesc{};
+  bindGroupDesc.layout = computeBindGroupLayout;
+  bindGroupDesc.entries = m_computeBindingEntries.data();
+  bindGroupDesc.entryCount = (uint32_t)m_computeBindingEntries.size();
+  m_computeBindGroup = m_device.createBindGroup(bindGroupDesc);
+  std::cout << "Compute group: " << m_computeBindGroup << "\n";
+}

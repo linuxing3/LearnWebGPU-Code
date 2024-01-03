@@ -30,6 +30,7 @@
 #include "ResourceManager.h"
 
 #include <GLFW/glfw3.h>
+#include <cstdint>
 #include <vector>
 #include <webgpu.hpp>
 
@@ -97,6 +98,17 @@ private:
 
   void initLighting();
   void updateLighting();
+  void initComputeBindGroup();
+  void terminateBindGroup();
+
+  void initComputeBindGroupLayout();
+  void terminateBindGroupLayout();
+
+  void initComputePipeline();
+  void terminateComputePipeline();
+
+  void initComputeBuffers();
+  void terminateBuffers();
 
 private:
   using vec2 = glm::vec2;
@@ -117,6 +129,7 @@ private:
 
   RenderPipeline m_pipeline = nullptr;
   ComputePipeline m_computePipeline = nullptr;
+  PipelineLayout m_pipelineLayout = nullptr;
 
   // --------------------------------------------------------
   // BindGroup = BindGroupLayoutEntry + BindingGroupEntry
@@ -125,10 +138,14 @@ private:
   vector<BindGroupEntry> m_bindingEntries;
   vector<BindGroupLayoutEntry> m_bindingLayoutEntries;
 
+  BindGroupLayout m_bindGroupLayout = nullptr;
   BindGroup m_computeBindGroup = nullptr;
   vector<BindGroupEntry> m_computeBindingEntries;
   vector<BindGroupLayoutEntry> m_computeBindingLayoutEntries;
-
+  uint32_t m_bufferSize = 1000;
+  wgpu::Buffer m_inputBuffer = nullptr;
+  wgpu::Buffer m_outputBuffer = nullptr;
+  wgpu::Buffer m_mapBuffer = nullptr;
   // --------------------------------------------------------
   // Vertex part
   vector<ResourceManager::VertexAttributes> m_vertexData;

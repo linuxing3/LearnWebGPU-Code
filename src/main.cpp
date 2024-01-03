@@ -38,7 +38,8 @@ int main(int, char **) {
   std::shared_ptr<ViewportLayer> vpLayer = std::make_shared<ViewportLayer>();
   app->PushLayer(vpLayer);
   while (app->isRunning()) {
-    app->onFrame();
+    /* app->onFrame(); */
+    app->onCompute();
   }
 
   app->onFinish();
